@@ -1,4 +1,5 @@
 import tkinter
+from tkinter import *
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.backend_bases import key_press_handler
@@ -7,6 +8,13 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 import numpy as np
 from dice import Dice 
 import time
+
+
+MODES = [
+        ("x axis", "X"),
+        ("y axis", "Y"),
+        ("z axis", "Z"),
+    ]
 
 def plot_faces(faces,ax):
     
@@ -27,16 +35,61 @@ def plot_faces(faces,ax):
 
 def on_key_press(event):
     print("you pressed {}".format(event.key))
-    if event.key == "right":
-        dice.translateX(1)
-        plot_faces(dice.faces, ax)
-        fig.canvas.draw()
-        time.sleep(0.05)
-    if event.key == "left":
-        dice.translateX(-1)
-        plot_faces(dice.faces, ax)
-        fig.canvas.draw()
-        time.sleep(0.01)
+    if currentAxis.get() == "X":
+        if event.key == "right":
+            dice.translateX(1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.05)
+        if event.key == "left":
+            dice.translateX(-1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.01)
+        if event.key == "up":
+            dice.translateZ(1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.01)
+        if event.key == "down":
+            dice.translateZ(-1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.01)            
+
+    elif currentAxis.get() == "Y":
+        if event.key == "right":
+            dice.translateY(1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.05)
+        if event.key == "left":
+            dice.translateY(-1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.01)
+        if event.key == "up":
+            dice.translateZ(1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.01)
+        if event.key == "down":
+            dice.translateZ(-1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.01)
+
+    elif currentAxis.get() == "Z":
+        if event.key == "right" or event.key == "up":
+            dice.translateZ(1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.05)
+        if event.key == "left" or event.key == "down":
+            dice.translateZ(-1)
+            plot_faces(dice.faces, ax)
+            fig.canvas.draw()
+            time.sleep(0.01)
 
     key_press_handler(event, canvas, toolbar)
 
@@ -45,9 +98,18 @@ def _quit():
     root.destroy()  # this is necessary on Windows to prevent
                     # Fatal Python Error: PyEval_RestoreThread: NULL tstate
 
-
 root = tkinter.Tk()
 root.wm_title("Trab1")
+
+currentAxis = StringVar()
+currentAxis.set("X")
+
+left_frame = tkinter.Frame(root).pack(side = "left")
+
+for text, mode in MODES:
+    b = tkinter.Radiobutton(left_frame, text=text,
+                    variable=currentAxis, value=mode, indicatoron=0)
+    b.pack()
 
 fig = Figure(figsize=(5, 4), dpi=100)
 ax = fig.add_subplot(1,1,1, projection='3d')
