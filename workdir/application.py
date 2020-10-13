@@ -9,7 +9,6 @@ import numpy as np
 from dice import Dice 
 import time
 
-
 MODES = [
         ("x axis", "X"),
         ("y axis", "Y"),
@@ -33,99 +32,103 @@ def plot_faces(faces,ax):
     
     return 0
 
+
 def on_key_press(event):
-    print("you pressed {}".format(event.key))
+    print("you pressed {}".format(event.keysym))
     if currentAxis.get() == "X":
-        if event.key == "right":
+        if event.keysym == "Right":
             dice.translateX(1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.05)
-        if event.key == "left":
+        if event.keysym == "Left":
             dice.translateX(-1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.01)
-        if event.key == "up":
+        if event.keysym == "Up":
             dice.translateZ(1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.01)
-        if event.key == "down":
+        if event.keysym == "Down":
             dice.translateZ(-1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.01)            
 
     elif currentAxis.get() == "Y":
-        if event.key == "right":
+        if event.keysym == "Right":
             dice.translateY(1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.05)
-        if event.key == "left":
+        if event.keysym == "Left":
             dice.translateY(-1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.01)
-        if event.key == "up":
+        if event.keysym == "Up":
             dice.translateZ(1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.01)
-        if event.key == "down":
+        if event.keysym == "Down":
             dice.translateZ(-1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.01)
 
     elif currentAxis.get() == "Z":
-        if event.key == "right" or event.key == "up":
+        if event.keysym == "Right" or event.keysym == "Up":
             dice.translateZ(1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.05)
-        if event.key == "left" or event.key == "down":
+        if event.keysym == "Left" or event.keysym == "Down":
             dice.translateZ(-1)
             plot_faces(dice.faces, ax)
             fig.canvas.draw()
             time.sleep(0.01)
 
-    key_press_handler(event, canvas, toolbar)
+    # key_press_handler(event, canvas)
 
-def _quit():
-    root.quit()     # stops mainloop
-    root.destroy()  # this is necessary on Windows to prevent
-                    # Fatal Python Error: PyEval_RestoreThread: NULL tstate
 
-root = tkinter.Tk()
-root.wm_title("Trab1")
+
+master = Tk()
+master.wm_title("Trab1")
+master.configure(background="white")
+
+master.bind("<Key>", on_key_press)
+
+left = Frame(master=master)
+left.pack(side=tkinter.LEFT, expand=False)
+center = Frame(master=master)
+center.pack(side=tkinter.LEFT,expand=True)
+right = Frame(master=master)
+right.pack(side=tkinter.LEFT,expand=False)
 
 currentAxis = StringVar()
 currentAxis.set("X")
 
-left_frame = tkinter.Frame(root).pack(side = "left")
-
 for text, mode in MODES:
-    b = tkinter.Radiobutton(left_frame, text=text,
+    b = tkinter.Radiobutton(left, text=text,
                     variable=currentAxis, value=mode, indicatoron=0)
     b.pack()
 
-fig = Figure(figsize=(5, 4), dpi=100)
+fig = Figure(figsize=(9, 6), dpi=100)
 ax = fig.add_subplot(1,1,1, projection='3d')
-
-canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
+canvas = FigureCanvasTkAgg(fig, master=center)  # A tk.DrawingArea.
 canvas.draw()
-canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-
-toolbar = NavigationToolbar2Tk(canvas, root)
-toolbar.update()
 canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
 canvas.mpl_connect("key_press_event", on_key_press)
 
-button = tkinter.Button(master=root, text="Quit", command=_quit)
-button.pack(side=tkinter.BOTTOM)
+fig_2 = Figure(figsize=(5, 4), dpi=100)
+ax_2 = fig_2.add_subplot(1,1,1)
+canvas_2 = FigureCanvasTkAgg(fig_2, master=right)  # A tk.DrawingArea.
+canvas_2.draw()
+canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
 
 cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
 dice = Dice(cube_definition)
@@ -133,9 +136,4 @@ dice = Dice(cube_definition)
 plot_faces(dice.faces, ax)
 fig.canvas.draw()
 
-tkinter.mainloop()
-# If you put root.destroy() here, it will cause an error if the window is
-# closed with the window manager.
-
-
-
+master.mainloop()
