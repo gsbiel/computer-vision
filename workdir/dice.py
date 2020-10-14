@@ -25,6 +25,25 @@ class Dice:
         self.body = (translation_matrix.dot(self.body.transpose())).transpose()
         self.generate_faces()
         return
+
+    def translateXY(self, code, d=1):
+        if code == "00":
+            translation_matrix = np.array([[1,0,0,-1*d], [0,1,0,-1*d],[0,0,1,0],[0,0,0,1]])
+            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
+            self.generate_faces()
+        elif code == "01":
+            translation_matrix = np.array([[1,0,0,-1*d], [0,1,0,d],[0,0,1,0],[0,0,0,1]])
+            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
+            self.generate_faces()
+        elif code == "10":
+            translation_matrix = np.array([[1,0,0,d], [0,1,0,-1*d],[0,0,1,0],[0,0,0,1]])
+            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
+            self.generate_faces()
+        elif code == "11":
+            translation_matrix = np.array([[1,0,0,d], [0,1,0,d],[0,0,1,0],[0,0,0,1]])
+            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
+            self.generate_faces()
+        return
         
     def generate_faces(self):
 

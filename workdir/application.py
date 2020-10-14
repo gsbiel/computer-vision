@@ -12,16 +12,105 @@ from camera import CameraAxis
 import time
 from mpl_toolkits.mplot3d import Axes3D
 
-
-MODES = [
-        ("x axis", "X"),
-        ("y axis", "Y"),
-        ("z axis", "Z"),
+OBJECTS = [
+        ("Dice", "DICE"),
+        ("Camera Axis", "CAMERA"),
     ]
 
-def plot_faces(faces,ax):
-    
+def diceGoOn():
+    remove_dice_from_canvas()
+    dice.translateY(1)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
+def diceGoBack():
+    remove_dice_from_canvas()
+    dice.translateY(-1)  
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
+def diceGoRight():
+    print("Vai pra direita.")
+    remove_dice_from_canvas()
+    dice.translateX(1)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return  
+
+def diceGoLeft():
+    remove_dice_from_canvas()
+    dice.translateX(-1)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
+def diceGoUpLeft():
+    remove_dice_from_canvas()
+    dice.translateXY("01")
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()    
+    return
+
+def diceGoUpRight():
+    remove_dice_from_canvas()
+    dice.translateXY("11")
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas() 
+    return
+
+def diceGoDownLeft():
+    remove_dice_from_canvas()
+    dice.translateXY("00")
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas() 
+    return
+
+def diceGoDownRight():
+    remove_dice_from_canvas()
+    dice.translateXY("10")
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas() 
+    return
+
+def diceGoUp():
+    remove_dice_from_canvas()
+    dice.translateZ(1)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
+def diceGoDown():
+    remove_dice_from_canvas()
+    dice.translateZ(-1)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
+def draw_dice_on_canvas(faces,ax):
+    ax.add_collection3d(faces)
+    return
+
+def remove_dice_from_canvas():
     ax.clear()
+    set_axis_scale()
+    draw_camera_on_canvas()
+    return
+
+def draw_camera_on_canvas():
+    camera.draw()
+    return
+
+def remove_camera_from_canvas():
+    return
+
+def update_canvas():
+    fig.canvas.draw()
+    time.sleep(0.05)
+    return
+
+def set_axis_scale():
     ax.set_xlim3d([0.0, 15.0])
     ax.set_xlabel('X')
 
@@ -30,94 +119,36 @@ def plot_faces(faces,ax):
 
     ax.set_zlim3d([0.0, 15.0])
     ax.set_zlabel('Z')
-    
-    ax.add_collection3d(faces)
-
-    return 0
-
+    return
 
 def on_key_press(event):
     print("you pressed {}".format(event.keysym))
-    if currentAxis.get() == "X":
-        if event.keysym == "Right":
-            dice.translateX(1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.05)
-        if event.keysym == "Left":
-            dice.translateX(-1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.01)
-        if event.keysym == "Up":
-            dice.translateZ(1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.01)
-        if event.keysym == "Down":
-            dice.translateZ(-1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.01)            
 
-    elif currentAxis.get() == "Y":
-        if event.keysym == "Right":
-            dice.translateY(1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.05)
-        if event.keysym == "Left":
-            dice.translateY(-1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.01)
-        if event.keysym == "Up":
-            dice.translateZ(1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.01)
-        if event.keysym == "Down":
-            dice.translateZ(-1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.01)
+    if currentObject.get() == "DICE":
 
-    elif currentAxis.get() == "Z":
-        if event.keysym == "Right" or event.keysym == "Up":
-            dice.translateZ(1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.05)
-        if event.keysym == "Left" or event.keysym == "Down":
-            dice.translateZ(-1)
-            plot_faces(dice.faces, ax)
-            camera.draw()
-            fig.canvas.draw()
-            time.sleep(0.01)
-
-    # key_press_handler(event, canvas)
-
-
-def get_arrow(theta):
-    x = np.cos(theta)
-    y = np.sin(theta)
-    z = 0
-    u = np.sin(2*theta)
-    v = np.sin(3*theta)
-    w = np.cos(3*theta)
-    return x,y,z,u,v,w
-
-
-
+        if event.keysym == "KP_6":
+            diceGoRight()
+        elif event.keysym == "KP_4":
+            diceGoLeft()
+        elif event.keysym == "KP_8":
+            diceGoOn()
+        elif event.keysym == "KP_2":
+            diceGoBack()
+        elif event.keysym == "KP_7":
+            diceGoUpLeft()
+        elif event.keysym == "KP_9":
+            diceGoUpRight()
+        elif event.keysym == "KP_1":
+            diceGoDownLeft()
+        elif event.keysym == "KP_3":
+            diceGoDownRight()
+        elif event.keysym == "KP_Add":
+            diceGoUp()
+        elif event.keysym == "KP_Enter":
+            diceGoDown()
+    
+    return
+            
 master = Tk()
 master.wm_title("Trab1")
 master.configure(background="white")
@@ -131,12 +162,12 @@ center.pack(side=tkinter.LEFT,expand=True)
 right = Frame(master=master)
 right.pack(side=tkinter.LEFT,expand=False)
 
-currentAxis = StringVar()
-currentAxis.set("X")
+currentObject = StringVar()
+currentObject.set("DICE")
 
-for text, mode in MODES:
+for text, mode in OBJECTS:
     b = tkinter.Radiobutton(left, text=text,
-                    variable=currentAxis, value=mode, indicatoron=0)
+                    variable=currentObject, value=mode, indicatoron=0)
     b.pack()
 
 fig = Figure(figsize=(9, 6), dpi=100)
@@ -158,10 +189,12 @@ canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
 
 cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
 dice = Dice(cube_definition)
+
+set_axis_scale()
 camera = CameraAxis(ax)
-plot_faces(dice.faces, ax)
-camera.draw()
-fig.canvas.draw()
+draw_dice_on_canvas(dice.faces, ax)
+draw_camera_on_canvas()
+update_canvas()
 
 master.mainloop()
 
