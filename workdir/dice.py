@@ -1,50 +1,34 @@
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from object_class import Object
 import numpy as np
 
-class Dice:
+class Dice(Object):
 
     def __init__(self, cube_definition):
-        self.body = cube_definition
+        super().__init__(cube_definition)
         self.generate_faces()
         return
 
     def translateX(self, dx=1):
-        translation_matrix = np.array([[1,0,0,dx], [0,1,0,0],[0,0,1,0],[0,0,0,1]])
-        self.body = (translation_matrix.dot(self.body.transpose())).transpose()
+        super().translateX(dx)
         self.generate_faces()
         return
 
     def translateY(self, dy=1):
-        translation_matrix = np.array([[1,0,0,0], [0,1,0,dy],[0,0,1,0],[0,0,0,1]])
-        self.body = (translation_matrix.dot(self.body.transpose())).transpose()
+        super().translateY(dy)
         self.generate_faces()
         return
 
     def translateZ(self, dz=1):
-        translation_matrix = np.array([[1,0,0,0], [0,1,0,0],[0,0,1,dz],[0,0,0,1]])
-        self.body = (translation_matrix.dot(self.body.transpose())).transpose()
+        super().translateZ(dz)
         self.generate_faces()
         return
 
     def translateXY(self, code, d=1):
-        if code == "00":
-            translation_matrix = np.array([[1,0,0,-1*d], [0,1,0,-1*d],[0,0,1,0],[0,0,0,1]])
-            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
-            self.generate_faces()
-        elif code == "01":
-            translation_matrix = np.array([[1,0,0,-1*d], [0,1,0,d],[0,0,1,0],[0,0,0,1]])
-            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
-            self.generate_faces()
-        elif code == "10":
-            translation_matrix = np.array([[1,0,0,d], [0,1,0,-1*d],[0,0,1,0],[0,0,0,1]])
-            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
-            self.generate_faces()
-        elif code == "11":
-            translation_matrix = np.array([[1,0,0,d], [0,1,0,d],[0,0,1,0],[0,0,0,1]])
-            self.body = (translation_matrix.dot(self.body.transpose())).transpose()
-            self.generate_faces()
+        super().translateZ(code, d)
+        self.generate_faces()
         return
-        
+
     def generate_faces(self):
 
         # cube_definition é passado em coordenadas homogêneas, preciso remover isso para poder plotar no eixo 3D.
