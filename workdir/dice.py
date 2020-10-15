@@ -25,7 +25,7 @@ class Dice(Object):
         return
 
     def translateXY(self, code, d=1):
-        super().translateZ(code, d)
+        super().translateXY(code, d)
         self.generate_faces()
         return
 
