@@ -12,6 +12,8 @@ from camera import CameraAxis
 import time
 from mpl_toolkits.mplot3d import Axes3D
 
+from slider import MySlider
+
 OBJECTS = [
         ("Dice", "DICE"),
         ("Camera Axis", "CAMERA"),
@@ -265,7 +267,6 @@ def on_key_press(event):
     return
 
 # APP's ENTRY POINT  ###########################################################################################################################         
-
 master = Tk()
 master.wm_title("Trab1")
 master.configure(background="white")
@@ -282,28 +283,48 @@ right.pack(side=tkinter.LEFT,expand=False)
 currentObject = StringVar()
 currentObject.set("DICE")
 
+# TOGGLE BUTTONS - DICE AND CAMERA SELECTORS ######################################################################################
 for text, mode in OBJECTS:
     b = tkinter.Radiobutton(left, text=text,
                     variable=currentObject, value=mode, indicatoron=0)
     b.pack()
 
+# SLIDERS - INTRINSIC PARAMETERS ##################################################################################################
+f_slider = MySlider(left,"f  ", 0, 1000, 10)
+f_slider.pack()
+
+sx_slider = MySlider(left,"sx  ", 0, 14, 0.1)
+sx_slider.pack()
+
+sy_slider = MySlider(left,"sy  ", 0, 14, 0.1)
+sy_slider.pack()
+
+s_theta_slider = MySlider(left,"s_theta  ", 0, 10, 0.1)
+s_theta_slider.pack()
+
+ox_slider = MySlider(left,"ox ", 0, 1000, 10)
+ox_slider.pack()
+
+oy_slider = MySlider(left,"oy ", 0, 100, 10)
+oy_slider.pack()
+
+# 3D PLOTTING AREA ##################################################################################################################
 fig = Figure(figsize=(9, 6), dpi=100)
 ax = fig.add_subplot(1,1,1, projection='3d')
-
 
 canvas = FigureCanvasTkAgg(fig, master=center)  # A tk.DrawingArea.
 canvas.draw()
 canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-
 canvas.mpl_connect("key_press_event", on_key_press)
 
+# 2D PLOTTING AREA ##################################################################################################################
 fig_2 = Figure(figsize=(5, 4), dpi=100)
 ax_2 = fig_2.add_subplot(1,1,1)
 canvas_2 = FigureCanvasTkAgg(fig_2, master=right)  # A tk.DrawingArea.
 canvas_2.draw()
 canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
 
-
+# DRAW DICE AND CAMERA
 cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
 dice = Dice(cube_definition)
 set_axis_scale()
@@ -312,6 +333,7 @@ draw_dice_on_canvas(dice.faces, ax)
 draw_camera_on_canvas()
 update_canvas()
 
+# START MAIN LOOP
 master.mainloop()
 
 
