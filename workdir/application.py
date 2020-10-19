@@ -19,6 +19,13 @@ OBJECTS = [
         ("Camera Axis", "CAMERA"),
     ]
 
+ROTATIONS = [
+    ("Rotate X","ROTATE_X"),
+    ("Rotate Y","ROTATE_Y"),
+    ("Rotate Z","ROTATE_Z"),
+    ("No Rotation","NONE"),
+]
+
 AXIS_COLORS = [
     "b", # color for x-axis
     "g", # color for z-axis
@@ -208,13 +215,13 @@ def update_canvas():
     return
 
 def set_axis_scale():
-    ax.set_xlim3d([0.0, 15.0])
+    ax.set_xlim3d([0.0, 10.0])
     ax.set_xlabel('X')
 
-    ax.set_ylim3d([0.0, 15.0])
+    ax.set_ylim3d([0.0, 10.0])
     ax.set_ylabel('Y')
 
-    ax.set_zlim3d([0.0, 15.0])
+    ax.set_zlim3d([0.0, 10.0])
     ax.set_zlabel('Z')
     return
 
@@ -274,7 +281,7 @@ master.configure(background="white")
 master.bind("<Key>", on_key_press)
 
 left = Frame(master=master)
-left.pack(side=tkinter.LEFT, expand=False)
+left.pack(side=tkinter.LEFT, expand=False, fill=tkinter.Y)
 center = Frame(master=master)
 center.pack(side=tkinter.LEFT,expand=True)
 right = Frame(master=master)
@@ -283,30 +290,39 @@ right.pack(side=tkinter.LEFT,expand=False)
 currentObject = StringVar()
 currentObject.set("DICE")
 
+currentRotation = StringVar()
+currentRotation.set("NONE")
+
 # TOGGLE BUTTONS - DICE AND CAMERA SELECTORS ######################################################################################
 for text, mode in OBJECTS:
     b = tkinter.Radiobutton(left, text=text,
-                    variable=currentObject, value=mode, indicatoron=0)
-    b.pack()
+                    variable=currentObject, value=mode, indicatoron=0, width=15)
+    b.pack(pady=1)
+
+# RADIO BUTTONS - ROTATION SELECTORS #############################################################################################
+for text, mode in ROTATIONS:
+    c = tkinter.Radiobutton(left, text=text,
+                    variable=currentRotation, value=mode, indicatoron=1, width=15)
+    c.pack(pady=1)
 
 # SLIDERS - INTRINSIC PARAMETERS ##################################################################################################
-f_slider = MySlider(left,"f  ", 0, 1000, 10)
-f_slider.pack()
+f_slider = MySlider(left,"f", 0, 1000, 10)
+f_slider.pack(pady=1)
 
-sx_slider = MySlider(left,"sx  ", 0, 14, 0.1)
-sx_slider.pack()
+sx_slider = MySlider(left,"sx", 0, 10, 0.1)
+sx_slider.pack(pady=1)
 
-sy_slider = MySlider(left,"sy  ", 0, 14, 0.1)
-sy_slider.pack()
+sy_slider = MySlider(left,"sy", 0, 10, 0.1)
+sy_slider.pack(pady=1)
 
-s_theta_slider = MySlider(left,"s_theta  ", 0, 10, 0.1)
-s_theta_slider.pack()
+s_theta_slider = MySlider(left,"s_theta", 0, 10, 0.1)
+s_theta_slider.pack(pady=1)
 
-ox_slider = MySlider(left,"ox ", 0, 1000, 10)
-ox_slider.pack()
+ox_slider = MySlider(left,"ox", 0, 1000, 10)
+ox_slider.pack(pady=1)
 
-oy_slider = MySlider(left,"oy ", 0, 100, 10)
-oy_slider.pack()
+oy_slider = MySlider(left,"oy", 0, 100, 10)
+oy_slider.pack(pady=1)
 
 # 3D PLOTTING AREA ##################################################################################################################
 fig = Figure(figsize=(9, 6), dpi=100)
@@ -324,7 +340,7 @@ canvas_2 = FigureCanvasTkAgg(fig_2, master=right)  # A tk.DrawingArea.
 canvas_2.draw()
 canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
 
-# DRAW DICE AND CAMERA
+# DRAW DICE AND CAMERA #############################################################################################################
 cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
 dice = Dice(cube_definition)
 set_axis_scale()
@@ -333,7 +349,7 @@ draw_dice_on_canvas(dice.faces, ax)
 draw_camera_on_canvas()
 update_canvas()
 
-# START MAIN LOOP
+# START MAIN LOOP #################################################################################################################
 master.mainloop()
 
 

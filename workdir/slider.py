@@ -16,6 +16,6 @@ class MySlider:
         self.slider = tkinter.Scale(self.container, from_=self.from_, to_=self.to_, orient=tkinter.HORIZONTAL, resolution=self.resolution).grid(row=0, column=1)
         return
     
-    def pack(self):
-        self.container.pack()
+    def pack(self, pady=1, padx=1):
+        self.container.pack(padx=padx, pady=pady)
         return
