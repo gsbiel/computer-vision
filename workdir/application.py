@@ -32,6 +32,10 @@ AXIS_COLORS = [
     "r"  # color for y-axis
 ]
 
+STYLING_PARAMETERS = {
+    "container_pady":20,
+}
+
 # DICE MOVEMENT EVENTS ##################################################################################################################
 
 def diceGoRight():
@@ -297,7 +301,7 @@ currentRotation.set("NONE")
 
 # Container
 object_selector_container = tkinter.Frame(left)
-object_selector_container.pack(pady=10)
+object_selector_container.pack(pady=STYLING_PARAMETERS['container_pady'])
 
 # Label
 object_selector_label = tkinter.Label(object_selector_container, text="Select Object", width=16)
@@ -312,22 +316,32 @@ for text, mode in OBJECTS:
 # RADIO BUTTONS - ROTATION SELECTORS #############################################################################################
 # Container
 rotation_selector_container = tkinter.Frame(left)
-rotation_selector_container.pack(pady=10)
+rotation_selector_container.pack(pady=STYLING_PARAMETERS['container_pady'])
 
 # Label
-rotation_selector_label = tkinter.Label(rotation_selector_container, text="Rotate Object", width=17)
+rotation_selector_label = tkinter.Label(rotation_selector_container, text="Rotation Controls", width=17)
 rotation_selector_label.pack()
 
-# Radio Buttons
-for text, mode in ROTATIONS:
-    c = tkinter.Radiobutton(rotation_selector_container, text=text,
-                    variable=currentRotation, value=mode, indicatoron=1, width=15)
-    c.pack(pady=1)
+# Sliders
+x_rotation_slider = MySlider(rotation_selector_container,"X", 0, 360, 2)
+x_rotation_slider.pack(pady=1)
+
+y_rotation_slider = MySlider(rotation_selector_container,"Y", 0, 360, 2)
+y_rotation_slider.pack(pady=1)
+
+z_rotation_slider = MySlider(rotation_selector_container,"Z", 0, 360, 2)
+z_rotation_slider.pack(pady=1)
+
+# Radio Buttons TROQUEI PELOS SLIDERS
+# for text, mode in ROTATIONS:
+#     c = tkinter.Radiobutton(rotation_selector_container, text=text,
+#                     variable=currentRotation, value=mode, indicatoron=1, width=15)
+#     c.pack(pady=1)
 
 # SLIDERS - INTRINSIC PARAMETERS ##################################################################################################
 # Container
 intrinsic_params_container = tkinter.Frame(left)
-intrinsic_params_container.pack(pady=10)
+intrinsic_params_container.pack(pady=STYLING_PARAMETERS['container_pady'])
 
 # Label
 intrinsic_params_label = tkinter.Label(intrinsic_params_container, text="Intrinsic Params", width=17)
