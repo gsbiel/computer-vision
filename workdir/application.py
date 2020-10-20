@@ -294,34 +294,62 @@ currentRotation = StringVar()
 currentRotation.set("NONE")
 
 # TOGGLE BUTTONS - DICE AND CAMERA SELECTORS ######################################################################################
+
+# Container
+object_selector_container = tkinter.Frame(left)
+object_selector_container.pack(pady=10)
+
+# Label
+object_selector_label = tkinter.Label(object_selector_container, text="Select Object", width=16)
+object_selector_label.pack()
+
+# Buttons
 for text, mode in OBJECTS:
-    b = tkinter.Radiobutton(left, text=text,
+    b = tkinter.Radiobutton(object_selector_container, text=text,
                     variable=currentObject, value=mode, indicatoron=0, width=15)
     b.pack(pady=1)
 
 # RADIO BUTTONS - ROTATION SELECTORS #############################################################################################
+# Container
+rotation_selector_container = tkinter.Frame(left)
+rotation_selector_container.pack(pady=10)
+
+# Label
+rotation_selector_label = tkinter.Label(rotation_selector_container, text="Rotate Object", width=17)
+rotation_selector_label.pack()
+
+# Radio Buttons
 for text, mode in ROTATIONS:
-    c = tkinter.Radiobutton(left, text=text,
+    c = tkinter.Radiobutton(rotation_selector_container, text=text,
                     variable=currentRotation, value=mode, indicatoron=1, width=15)
     c.pack(pady=1)
 
 # SLIDERS - INTRINSIC PARAMETERS ##################################################################################################
-f_slider = MySlider(left,"f", 0, 1000, 10)
+# Container
+intrinsic_params_container = tkinter.Frame(left)
+intrinsic_params_container.pack(pady=10)
+
+# Label
+intrinsic_params_label = tkinter.Label(intrinsic_params_container, text="Intrinsic Params", width=17)
+intrinsic_params_label.pack()
+
+# Sliders
+f_slider = MySlider(intrinsic_params_container,"f", 0, 1000, 10)
 f_slider.pack(pady=1)
 
-sx_slider = MySlider(left,"sx", 0, 10, 0.1)
+sx_slider = MySlider(intrinsic_params_container,"sx", 0, 10, 0.1)
 sx_slider.pack(pady=1)
 
-sy_slider = MySlider(left,"sy", 0, 10, 0.1)
+sy_slider = MySlider(intrinsic_params_container,"sy", 0, 10, 0.1)
 sy_slider.pack(pady=1)
 
-s_theta_slider = MySlider(left,"s_theta", 0, 10, 0.1)
+s_theta_slider = MySlider(intrinsic_params_container,"s_theta", 0, 10, 0.1)
 s_theta_slider.pack(pady=1)
 
-ox_slider = MySlider(left,"ox", 0, 1000, 10)
+ox_slider = MySlider(intrinsic_params_container,"ox", 0, 1000, 10)
 ox_slider.pack(pady=1)
 
-oy_slider = MySlider(left,"oy", 0, 100, 10)
+oy_slider = MySlider(intrinsic_params_container,"oy", 0, 100, 10)
 oy_slider.pack(pady=1)
 
 # 3D PLOTTING AREA ##################################################################################################################
