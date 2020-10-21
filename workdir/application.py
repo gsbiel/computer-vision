@@ -36,6 +36,10 @@ STYLING_PARAMETERS = {
     "container_pady":20,
 }
 
+x_current_orientation = 0
+y_current_orientation = 0
+z_current_orientation = 0
+
 # DICE MOVEMENT EVENTS ##################################################################################################################
 
 def diceGoRight():
@@ -277,6 +281,30 @@ def on_key_press(event):
                 cameraGoDown()   
     return
 
+def rotate_x_handler(current_orientation):
+    print('Current orientation: {value}'.format(value=current_orientation))
+    print('New orientation: {value}'.format(value=x_rotation_value.get()))
+    print('Rotate {value}'.format(value=(x_rotation_value.get() - current_orientation)))
+    global x_current_orientation 
+    x_current_orientation  = x_rotation_value.get()
+    return
+
+def rotate_y_handler(current_orientation):
+    print('Current orientation: {value}'.format(value=current_orientation))
+    print('New orientation: {value}'.format(value=y_rotation_value.get()))
+    print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
+    global y_current_orientation 
+    y_current_orientation  = y_rotation_value.get()
+    return
+
+def rotate_z_handler(current_orientation):
+    print('Current orientation: {value}'.format(value=current_orientation))
+    print('New orientation: {value}'.format(value=z_rotation_value.get()))
+    print('Rotate {value}'.format(value=(z_rotation_value.get() - current_orientation)))
+    global z_current_orientation 
+    z_current_orientation  = z_rotation_value.get()
+    return
+
 # APP's ENTRY POINT  ###########################################################################################################################         
 master = Tk()
 master.wm_title("Trab1")
@@ -296,6 +324,36 @@ currentObject.set("DICE")
 
 currentRotation = StringVar()
 currentRotation.set("NONE")
+
+x_rotation_value = tkinter.IntVar()
+x_rotation_value.set(0)
+x_rotation_value.trace("w", lambda *args: rotate_x_handler(x_current_orientation))
+
+y_rotation_value = tkinter.IntVar()
+y_rotation_value.set(0)
+y_rotation_value.trace("w", lambda *args: rotate_y_handler(y_current_orientation))
+
+z_rotation_value = tkinter.IntVar()
+z_rotation_value.set(0)
+z_rotation_value.trace("w", lambda *args: rotate_z_handler(z_current_orientation))
+
+f_value = tkinter.IntVar()
+f_value.set(0)
+
+sx_value = tkinter.IntVar()
+sx_value.set(0)
+
+sy_value = tkinter.IntVar()
+sy_value.set(0)
+
+stheta_value = tkinter.IntVar()
+stheta_value.set(0)
+
+ox_value = tkinter.IntVar()
+ox_value.set(0)
+
+oy_value = tkinter.IntVar()
+oy_value.set(0)
 
 # TOGGLE BUTTONS - DICE AND CAMERA SELECTORS ######################################################################################
 
@@ -323,13 +381,13 @@ rotation_selector_label = tkinter.Label(rotation_selector_container, text="Rotat
 rotation_selector_label.pack()
 
 # Sliders
-x_rotation_slider = MySlider(rotation_selector_container,"X", 0, 360, 2)
+x_rotation_slider = MySlider(rotation_selector_container, x_rotation_value, "X", 0, 360, 2)
 x_rotation_slider.pack(pady=1)
 
-y_rotation_slider = MySlider(rotation_selector_container,"Y", 0, 360, 2)
+y_rotation_slider = MySlider(rotation_selector_container, y_rotation_value, "Y", 0, 360, 2)
 y_rotation_slider.pack(pady=1)
 
-z_rotation_slider = MySlider(rotation_selector_container,"Z", 0, 360, 2)
+z_rotation_slider = MySlider(rotation_selector_container, z_rotation_value, "Z", 0, 360, 2)
 z_rotation_slider.pack(pady=1)
 
 # Radio Buttons TROQUEI PELOS SLIDERS
@@ -348,22 +406,22 @@ intrinsic_params_label = tkinter.Label(intrinsic_params_container, text="Intrins
 intrinsic_params_label.pack()
 
 # Sliders
-f_slider = MySlider(intrinsic_params_container,"f", 0, 1000, 10)
+f_slider = MySlider(intrinsic_params_container, f_value, "f", 0, 1000, 10)
 f_slider.pack(pady=1)
 
-sx_slider = MySlider(intrinsic_params_container,"sx", 0, 10, 0.1)
+sx_slider = MySlider(intrinsic_params_container, sx_value,"sx", 0, 10, 0.1)
 sx_slider.pack(pady=1)
 
-sy_slider = MySlider(intrinsic_params_container,"sy", 0, 10, 0.1)
+sy_slider = MySlider(intrinsic_params_container, sy_value,"sy", 0, 10, 0.1)
 sy_slider.pack(pady=1)
 
-s_theta_slider = MySlider(intrinsic_params_container,"s_theta", 0, 10, 0.1)
+s_theta_slider = MySlider(intrinsic_params_container, stheta_value,"s_theta", 0, 10, 0.1)
 s_theta_slider.pack(pady=1)
 
-ox_slider = MySlider(intrinsic_params_container,"ox", 0, 1000, 10)
+ox_slider = MySlider(intrinsic_params_container, ox_value, "ox", 0, 1000, 10)
 ox_slider.pack(pady=1)
 
-oy_slider = MySlider(intrinsic_params_container,"oy", 0, 100, 10)
+oy_slider = MySlider(intrinsic_params_container, oy_value, "oy", 0, 100, 10)
 oy_slider.pack(pady=1)
 
 # 3D PLOTTING AREA ##################################################################################################################
