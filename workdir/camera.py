@@ -11,5 +11,15 @@ class CameraAxis(Object):
         self.p_1 = p_1
         return
 
+    def transform(self, transformation_matrix):
+        super().transform(transformation_matrix)
+        self.p_1 = (transformation_matrix.dot(self.p_1.transpose())).transpose()
+
+    def rotateX(self, angle):
+        super.rotateX(angle)
+        # self.p_1 = 
+        return
+
+
 
 

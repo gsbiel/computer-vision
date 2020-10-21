@@ -112,6 +112,27 @@ def diceGoDown():
     update_canvas()
     return
 
+def diceRotateX(angle):
+    remove_dice_from_canvas()
+    dice.rotateX(angle)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
+def diceRotateY(angle):
+    remove_dice_from_canvas()
+    dice.rotateY(angle)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
+def diceRotateZ(angle):
+    remove_dice_from_canvas()
+    dice.rotateZ(angle)
+    draw_dice_on_canvas(dice.faces, ax)
+    update_canvas()
+    return
+
 # CAMERA MOVEMENT EVENTS ##################################################################################################################
 
 def cameraGoRight():
@@ -282,25 +303,34 @@ def on_key_press(event):
     return
 
 def rotate_x_handler(current_orientation):
-    print('Current orientation: {value}'.format(value=current_orientation))
-    print('New orientation: {value}'.format(value=x_rotation_value.get()))
-    print('Rotate {value}'.format(value=(x_rotation_value.get() - current_orientation)))
+    rotation_angle = x_rotation_value.get() - current_orientation
+    # print('Current orientation: {value}'.format(value=current_orientation))
+    # print('New orientation: {value}'.format(value=x_rotation_value.get()))
+    # print('Rotate {value}'.format(value=rotation_angle))
+    if currentObject.get() == "DICE":
+        diceRotateX(rotation_angle)
     global x_current_orientation 
     x_current_orientation  = x_rotation_value.get()
     return
 
 def rotate_y_handler(current_orientation):
-    print('Current orientation: {value}'.format(value=current_orientation))
-    print('New orientation: {value}'.format(value=y_rotation_value.get()))
-    print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
+    rotation_angle = y_rotation_value.get() - current_orientation
+    # print('Current orientation: {value}'.format(value=current_orientation))
+    # print('New orientation: {value}'.format(value=y_rotation_value.get()))
+    # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
+    if currentObject.get() == "DICE":
+        diceRotateY(rotation_angle)
     global y_current_orientation 
     y_current_orientation  = y_rotation_value.get()
     return
 
 def rotate_z_handler(current_orientation):
-    print('Current orientation: {value}'.format(value=current_orientation))
-    print('New orientation: {value}'.format(value=z_rotation_value.get()))
-    print('Rotate {value}'.format(value=(z_rotation_value.get() - current_orientation)))
+    rotation_angle = z_rotation_value.get() - current_orientation
+    # print('Current orientation: {value}'.format(value=current_orientation))
+    # print('New orientation: {value}'.format(value=y_rotation_value.get()))
+    # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
+    if currentObject.get() == "DICE":
+        diceRotateZ(rotation_angle)
     global z_current_orientation 
     z_current_orientation  = z_rotation_value.get()
     return

@@ -29,6 +29,21 @@ class Dice(Object):
         self.generate_faces()
         return
 
+    def rotateX(self, angle):
+        super().rotateX(angle)
+        self.generate_faces()
+        return
+
+    def rotateY(self, angle):
+        super().rotateY(angle)
+        self.generate_faces()
+        return
+
+    def rotateZ(self, angle):
+        super().rotateZ(angle)
+        self.generate_faces()
+        return
+
     def generate_faces(self):
 
         # cube_definition é passado em coordenadas homogêneas, preciso remover isso para poder plotar no eixo 3D.
