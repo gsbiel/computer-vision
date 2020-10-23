@@ -16,7 +16,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from slider import MySlider
 
 OBJECTS = [
-        ("Dice", "DICE"),
+        ("Dice", "OBJECT"),
         ("Camera Axis", "CAMERA"),
     ]
 
@@ -41,77 +41,79 @@ x_current_orientation = 0
 y_current_orientation = 0
 z_current_orientation = 0
 
-# DICE MOVEMENT EVENTS ##################################################################################################################
+# CHARIZARD MOVEMENT EVENTS ##################################################################################################################
 
-def diceGoRight():
-    remove_dice_from_canvas()
-    dice.translateX(1)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoRight():
+    remove_charizard_from_canvas()
+    charizard.translateX(1)
+    draw_charizard_on_canvas()
     update_canvas()
     return 
 
-def diceGoLeft():
-    remove_dice_from_canvas()
-    dice.translateX(-1)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoLeft():
+    remove_charizard_from_canvas()
+    charizard.translateX(-1)
+    draw_charizard_on_canvas()
     update_canvas()
     return
 
-def diceGoOn():
-    remove_dice_from_canvas()
-    dice.translateY(1)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoOn():
+    remove_charizard_from_canvas()
+    charizard.translateY(1)
+    draw_charizard_on_canvas()
     update_canvas()
     return
 
-def diceGoBack():
-    remove_dice_from_canvas()
-    dice.translateY(-1)  
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoBack():
+    remove_charizard_from_canvas()
+    charizard.translateY(-1)  
+    draw_charizard_on_canvas()
     update_canvas()
     return
 
-def diceGoUpLeft():
-    remove_dice_from_canvas()
-    dice.translateXY("01")
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoUpLeft():
+    remove_charizard_from_canvas()
+    charizard.translateXY("01")
+    draw_charizard_on_canvas()
     update_canvas()    
     return
 
-def diceGoUpRight():
-    remove_dice_from_canvas()
-    dice.translateXY("11")
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoUpRight():
+    remove_charizard_from_canvas()
+    charizard.translateXY("11")
+    draw_charizard_on_canvas()
     update_canvas() 
     return
 
-def diceGoDownLeft():
-    remove_dice_from_canvas()
-    dice.translateXY("00")
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoDownLeft():
+    remove_charizard_from_canvas()
+    charizard.translateXY("00")
+    draw_charizard_on_canvas()
     update_canvas() 
     return
 
-def diceGoDownRight():
-    remove_dice_from_canvas()
-    dice.translateXY("10")
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoDownRight():
+    remove_charizard_from_canvas()
+    charizard.translateXY("10")
+    draw_charizard_on_canvas()
     update_canvas() 
     return
 
-def diceGoUp():
-    remove_dice_from_canvas()
-    dice.translateZ(1)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoUp():
+    remove_charizard_from_canvas()
+    charizard.translateZ(1)
+    draw_charizard_on_canvas()
     update_canvas()
     return
 
-def diceGoDown():
-    remove_dice_from_canvas()
-    dice.translateZ(-1)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardGoDown():
+    remove_charizard_from_canvas()
+    charizard.translateZ(-1)
+    draw_charizard_on_canvas()
     update_canvas()
     return
+
+# DICE MOVEMENT EVENTS ##################################################################################################################
 
 def diceRotateX(angle):
     remove_dice_from_canvas()
@@ -208,17 +210,6 @@ def cameraGoDown():
 
 # CANVAS FUNCTIONS ##########################################################################################################################
 
-def draw_dice_on_canvas(faces,ax):
-    ax.add_collection3d(faces)
-    return
-
-def remove_dice_from_canvas():
-    ax.clear()
-    set_axis_scale()
-    draw_camera_on_canvas()
-    draw_charizard_on_canvas()
-    return
-
 def draw_camera_on_canvas():
     for index in range(camera.p_1.shape[0]):
         ax.quiver(
@@ -237,18 +228,22 @@ def draw_camera_on_canvas():
 def remove_camera_from_canvas():
     ax.clear()
     set_axis_scale()
-    draw_dice_on_canvas(dice.faces, ax)
     draw_charizard_on_canvas()
     return
 
 def draw_charizard_on_canvas():
     # Plot and render the faces of the object
-    ax.add_collection3d(Poly3DCollection(charizard.vectors))
+    # ax.add_collection3d(Poly3DCollection(charizard.body))
     # Plot the contours of the faces of the object
-    ax.add_collection3d(Line3DCollection(charizard.vectors, colors='k', linewidths=0.2, linestyles='-'))
+    # ax.add_collection3d(Line3DCollection(charizard.body, colors='k', linewidths=0.2, linestyles='-'))
+    body_data = charizard.body.transpose()
+    ax.plot(body_data[0,:],body_data[1,:],body_data[2,:],'r')
     return
 
 def remove_charizard_from_canvas():
+    ax.clear()
+    set_axis_scale()
+    draw_camera_on_canvas()
     return
 
 def update_canvas():
@@ -307,29 +302,29 @@ def set_axes_equal(ax, charizard):
 # EVENT HANDLERS ############################################################################################################################
 
 def on_key_press(event):
-    if currentObject.get() == "DICE":
+    if currentObject.get() == OBJECTS[0][1]:
         if event.keysym == "KP_6":
-            diceGoRight()
+            charizardGoRight()
         elif event.keysym == "KP_4":
-            diceGoLeft()
+            charizardGoLeft()
         elif event.keysym == "KP_8":
-            diceGoOn()
+            charizardGoOn()
         elif event.keysym == "KP_2":
-            diceGoBack()
+            charizardGoBack()
         elif event.keysym == "KP_7":
-            diceGoUpLeft()
+            charizardGoUpLeft()
         elif event.keysym == "KP_9":
-            diceGoUpRight()
+            charizardGoUpRight()
         elif event.keysym == "KP_1":
-            diceGoDownLeft()
+            charizardGoDownLeft()
         elif event.keysym == "KP_3":
-            diceGoDownRight()
+            charizardGoDownRight()
         elif event.keysym == "KP_Add":
-            diceGoUp()
+            charizardGoUp()
         elif event.keysym == "KP_Enter":
-            diceGoDown() 
+            charizardGoDown() 
 
-    elif currentObject.get() == "CAMERA":
+    elif currentObject.get() == OBJECTS[1][1]:
             if event.keysym == "KP_6":
                 cameraGoRight()
             elif event.keysym == "KP_4":
@@ -357,7 +352,7 @@ def rotate_x_handler(current_orientation):
     # print('Current orientation: {value}'.format(value=current_orientation))
     # print('New orientation: {value}'.format(value=x_rotation_value.get()))
     # print('Rotate {value}'.format(value=rotation_angle))
-    if currentObject.get() == "DICE":
+    if currentObject.get() == OBJECTS[0][1]:
         diceRotateX(rotation_angle)
     global x_current_orientation 
     x_current_orientation  = x_rotation_value.get()
@@ -368,7 +363,7 @@ def rotate_y_handler(current_orientation):
     # print('Current orientation: {value}'.format(value=current_orientation))
     # print('New orientation: {value}'.format(value=y_rotation_value.get()))
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
-    if currentObject.get() == "DICE":
+    if currentObject.get() == OBJECTS[0][1]:
         diceRotateY(rotation_angle)
     global y_current_orientation 
     y_current_orientation  = y_rotation_value.get()
@@ -379,7 +374,7 @@ def rotate_z_handler(current_orientation):
     # print('Current orientation: {value}'.format(value=current_orientation))
     # print('New orientation: {value}'.format(value=y_rotation_value.get()))
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
-    if currentObject.get() == "DICE":
+    if currentObject.get() == OBJECTS[1][1]:
         diceRotateZ(rotation_angle)
     global z_current_orientation 
     z_current_orientation  = z_rotation_value.get()
@@ -400,7 +395,7 @@ right = Frame(master=master)
 right.pack(side=tkinter.LEFT,expand=False)
 
 currentObject = StringVar()
-currentObject.set("DICE")
+currentObject.set(OBJECTS[0][1])
 
 currentRotation = StringVar()
 currentRotation.set("NONE")
@@ -522,8 +517,9 @@ canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
 
 # CREATE OBJECTS #############################################################################################################
 # DICE
-cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
-dice = Dice(cube_definition)
+# cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
+# dice = Dice(cube_definition)
+
 # CAMERA
 camera = CameraAxis()
 # Charizard
@@ -532,7 +528,6 @@ charizard = Charizard()
 set_axis_scale()
 # set_axes_equal(ax, charizard)
 # DRAW OBJECTS #############################################################################################################
-# draw_dice_on_canvas(dice.faces, ax)
 draw_camera_on_canvas()
 draw_charizard_on_canvas()
 
