@@ -9,6 +9,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 import numpy as np
 from dice import Dice 
 from camera import CameraAxis
+from charizard import Charizard
 import time
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -215,6 +216,7 @@ def remove_dice_from_canvas():
     ax.clear()
     set_axis_scale()
     draw_camera_on_canvas()
+    draw_charizard_on_canvas()
     return
 
 def draw_camera_on_canvas():
@@ -236,6 +238,17 @@ def remove_camera_from_canvas():
     ax.clear()
     set_axis_scale()
     draw_dice_on_canvas(dice.faces, ax)
+    draw_charizard_on_canvas()
+    return
+
+def draw_charizard_on_canvas():
+    # Plot and render the faces of the object
+    ax.add_collection3d(Poly3DCollection(charizard.vectors))
+    # Plot the contours of the faces of the object
+    ax.add_collection3d(Line3DCollection(charizard.vectors, colors='k', linewidths=0.2, linestyles='-'))
+    return
+
+def remove_charizard_from_canvas():
     return
 
 def update_canvas():
@@ -244,14 +257,51 @@ def update_canvas():
     return
 
 def set_axis_scale():
-    ax.set_xlim3d([0.0, 10.0])
+    # ax.set_xlim3d([0.0, 10.0])
+    ax.set_xlim3d([-15.0, 15.0])
     ax.set_xlabel('X')
 
-    ax.set_ylim3d([0.0, 10.0])
+    # ax.set_ylim3d([0.0, 10.0])
+    ax.set_ylim3d([-5.0, 25.0])
     ax.set_ylabel('Y')
 
-    ax.set_zlim3d([0.0, 10.0])
+    # ax.set_zlim3d([0.0, 10.0])
+    ax.set_zlim3d([-20.0, 10.0])
     ax.set_zlabel('Z')
+    return
+
+def set_axes_equal(ax, charizard):
+    #Make axes of 3D plot have equal scale so that spheres appear as spheres,
+    #cubes as cubes, etc..  This is one possible solution to Matplotlib's
+    #ax.set_aspect('equal') and ax.axis('equal') not working for 3D.
+
+    #Input
+    #  ax: a matplotlib axis, e.g., as output from plt.gca().
+    ax.auto_scale_xyz(charizard.body[0,:],charizard.body[1,:],charizard.body[2,:])
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    x_limits = ax.get_xlim3d()
+    y_limits = ax.get_ylim3d()
+    z_limits = ax.get_zlim3d()
+
+    x_range = abs(x_limits[1] - x_limits[0])
+    x_middle = np.mean(x_limits)
+    y_range = abs(y_limits[1] - y_limits[0])
+    y_middle = np.mean(y_limits)
+    z_range = abs(z_limits[1] - z_limits[0])
+    z_middle = np.mean(z_limits)
+
+    # The plot bounding box is a sphere in the sense of the infinity
+    # norm, hence I call half the max range the plot radius.
+    plot_radius = 0.5*max([x_range, y_range, z_range])
+
+    ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
+    ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
+    ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
+
     return
 
 # EVENT HANDLERS ############################################################################################################################
@@ -470,15 +520,23 @@ canvas_2 = FigureCanvasTkAgg(fig_2, master=right)  # A tk.DrawingArea.
 canvas_2.draw()
 canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
 
-# DRAW DICE AND CAMERA #############################################################################################################
+# CREATE OBJECTS #############################################################################################################
+# DICE
 cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
 dice = Dice(cube_definition)
-set_axis_scale()
+# CAMERA
 camera = CameraAxis()
-draw_dice_on_canvas(dice.faces, ax)
-draw_camera_on_canvas()
-update_canvas()
+# Charizard
+charizard = Charizard()
 
+set_axis_scale()
+# set_axes_equal(ax, charizard)
+# DRAW OBJECTS #############################################################################################################
+# draw_dice_on_canvas(dice.faces, ax)
+draw_camera_on_canvas()
+draw_charizard_on_canvas()
+
+update_canvas()
 # START MAIN LOOP #################################################################################################################
 master.mainloop()
 

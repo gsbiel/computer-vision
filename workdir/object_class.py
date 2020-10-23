@@ -55,7 +55,7 @@ class Object:
 
     def rotateX(self, angle):
         backToOriginTransformation = np.linalg.inv(self.transformations_tracker)
-        print('Transformação para origem: {matriz}'.format(matriz = backToOriginTransformation ))
+        # print('Transformação para origem: {matriz}'.format(matriz = backToOriginTransformation ))
         originBody = backToOriginTransformation.dot(self.body.transpose())
         rad_angle = (angle * pi)/180.0
         rotation_matrix = np.array([
@@ -67,6 +67,7 @@ class Object:
         bodyRotatedAtOrigin = rotation_matrix.dot(originBody)
         rotatedBodyBackToCurrentPosition = (self.transformations_tracker.dot(bodyRotatedAtOrigin)).transpose()
         self.body = rotatedBodyBackToCurrentPosition
+        # self.body = bodyRotatedAtOrigin
         # self.body = originBody.transpose()
         # print(self.body)
         self.track_transformation(rotation_matrix)
