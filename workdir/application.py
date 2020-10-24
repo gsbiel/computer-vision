@@ -339,36 +339,30 @@ def on_key_press(event):
     return
 
 def rotate_x_handler(current_orientation):
-    rotation_angle = x_rotation_value.get() - current_orientation
+    rotation_angle = x_rotation_value.get()
     # print('Current orientation: {value}'.format(value=current_orientation))
     # print('New orientation: {value}'.format(value=x_rotation_value.get()))
     # print('Rotate {value}'.format(value=rotation_angle))
     if currentObject.get() == OBJECTS[0][1]:
         charizardRotateX(rotation_angle)
-    global x_current_orientation 
-    x_current_orientation  = x_rotation_value.get()
     return
 
 def rotate_y_handler(current_orientation):
-    rotation_angle = y_rotation_value.get() - current_orientation
+    rotation_angle = y_rotation_value.get()
     # print('Current orientation: {value}'.format(value=current_orientation))
     # print('New orientation: {value}'.format(value=y_rotation_value.get()))
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
     if currentObject.get() == OBJECTS[0][1]:
         charizardRotateY(rotation_angle)
-    global y_current_orientation 
-    y_current_orientation  = y_rotation_value.get()
     return
 
 def rotate_z_handler(current_orientation):
-    rotation_angle = z_rotation_value.get() - current_orientation
+    rotation_angle = z_rotation_value.get()
     # print('Current orientation: {value}'.format(value=current_orientation))
     # print('New orientation: {value}'.format(value=y_rotation_value.get()))
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
     if currentObject.get() == OBJECTS[0][1]:
         charizardRotateZ(rotation_angle)
-    global z_current_orientation 
-    z_current_orientation  = z_rotation_value.get()
     return
 
 # APP's ENTRY POINT  ###########################################################################################################################         
