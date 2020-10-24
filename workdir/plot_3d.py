@@ -4,6 +4,12 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D, art3d  
 from math import pi,cos,sin
 
+def generate_vectors(x, y, z):
+    zip_data = list(zip(x,y,z))
+    data_array = np.array(zip_data)
+    reshape = data_array.reshape(1572,3,3)
+    return reshape
+
 def set_axes_equal(ax):
     #Make axes of 3D plot have equal scale so that spheres appear as spheres,
     #cubes as cubes, etc..  This is one possible solution to Matplotlib's
@@ -46,8 +52,18 @@ x = your_mesh.x.flatten()
 y = your_mesh.y.flatten()
 z = your_mesh.z.flatten()
 
+# print(x[:10])
+# print(list(zip(x,y,z))[:20])
+# for tuple in zip(x,y,z):
+#     print(tuple)
+generate_vectors(x,y,z)
 # Get the vectors that define the triangular faces that form the 3D object
-obj_vectors = your_mesh.vectors
+# obj_vectors = your_mesh.vectors
+obj_vectors = generate_vectors(x,y,z)
+
+print("Dimensão da malha")
+print(obj_vectors.shape)
+print(obj_vectors[:3])
 
 # Create the 3D object from the x,y,z coordinates and add the additional array of ones to 
 # represent the object using homogeneous coordinates

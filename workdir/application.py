@@ -113,26 +113,24 @@ def charizardGoDown():
     update_canvas()
     return
 
-# DICE MOVEMENT EVENTS ##################################################################################################################
-
-def diceRotateX(angle):
-    remove_dice_from_canvas()
-    dice.rotateX(angle)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardRotateX(angle):
+    remove_charizard_from_canvas()
+    charizard.rotateX(angle)
+    draw_charizard_on_canvas()
     update_canvas()
     return
 
-def diceRotateY(angle):
-    remove_dice_from_canvas()
-    dice.rotateY(angle)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardRotateY(angle):
+    remove_charizard_from_canvas()
+    charizard.rotateY(angle)
+    draw_charizard_on_canvas()
     update_canvas()
     return
 
-def diceRotateZ(angle):
-    remove_dice_from_canvas()
-    dice.rotateZ(angle)
-    draw_dice_on_canvas(dice.faces, ax)
+def charizardRotateZ(angle):
+    remove_charizard_from_canvas()
+    charizard.rotateZ(angle)
+    draw_charizard_on_canvas()
     update_canvas()
     return
 
@@ -233,11 +231,11 @@ def remove_camera_from_canvas():
 
 def draw_charizard_on_canvas():
     # Plot and render the faces of the object
-    # ax.add_collection3d(Poly3DCollection(charizard.body))
+    ax.add_collection3d(Poly3DCollection(charizard.vectors))
     # Plot the contours of the faces of the object
-    # ax.add_collection3d(Line3DCollection(charizard.body, colors='k', linewidths=0.2, linestyles='-'))
-    body_data = charizard.body.transpose()
-    ax.plot(body_data[0,:],body_data[1,:],body_data[2,:],'r')
+    ax.add_collection3d(Line3DCollection(charizard.vectors, colors='k', linewidths=0.2, linestyles='-'))
+    # body_data = charizard.body.transpose()
+    # ax.plot(body_data[0,:],body_data[1,:],body_data[2,:],'r')
     return
 
 def remove_charizard_from_canvas():
@@ -248,7 +246,7 @@ def remove_charizard_from_canvas():
 
 def update_canvas():
     fig.canvas.draw()
-    time.sleep(0.05)
+    time.sleep(0.01)
     return
 
 def set_axis_scale():
@@ -266,12 +264,7 @@ def set_axis_scale():
     return
 
 def set_axes_equal(ax, charizard):
-    #Make axes of 3D plot have equal scale so that spheres appear as spheres,
-    #cubes as cubes, etc..  This is one possible solution to Matplotlib's
-    #ax.set_aspect('equal') and ax.axis('equal') not working for 3D.
 
-    #Input
-    #  ax: a matplotlib axis, e.g., as output from plt.gca().
     ax.auto_scale_xyz(charizard.body[0,:],charizard.body[1,:],charizard.body[2,:])
 
     ax.set_xlabel('X')
@@ -289,8 +282,6 @@ def set_axes_equal(ax, charizard):
     z_range = abs(z_limits[1] - z_limits[0])
     z_middle = np.mean(z_limits)
 
-    # The plot bounding box is a sphere in the sense of the infinity
-    # norm, hence I call half the max range the plot radius.
     plot_radius = 0.5*max([x_range, y_range, z_range])
 
     ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
@@ -353,7 +344,7 @@ def rotate_x_handler(current_orientation):
     # print('New orientation: {value}'.format(value=x_rotation_value.get()))
     # print('Rotate {value}'.format(value=rotation_angle))
     if currentObject.get() == OBJECTS[0][1]:
-        diceRotateX(rotation_angle)
+        charizardRotateX(rotation_angle)
     global x_current_orientation 
     x_current_orientation  = x_rotation_value.get()
     return
@@ -364,7 +355,7 @@ def rotate_y_handler(current_orientation):
     # print('New orientation: {value}'.format(value=y_rotation_value.get()))
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
     if currentObject.get() == OBJECTS[0][1]:
-        diceRotateY(rotation_angle)
+        charizardRotateY(rotation_angle)
     global y_current_orientation 
     y_current_orientation  = y_rotation_value.get()
     return
@@ -374,8 +365,8 @@ def rotate_z_handler(current_orientation):
     # print('Current orientation: {value}'.format(value=current_orientation))
     # print('New orientation: {value}'.format(value=y_rotation_value.get()))
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
-    if currentObject.get() == OBJECTS[1][1]:
-        diceRotateZ(rotation_angle)
+    if currentObject.get() == OBJECTS[0][1]:
+        charizardRotateZ(rotation_angle)
     global z_current_orientation 
     z_current_orientation  = z_rotation_value.get()
     return
@@ -516,9 +507,6 @@ canvas_2.draw()
 canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
 
 # CREATE OBJECTS #############################################################################################################
-# DICE
-# cube_definition = np.array([[0,0,0,1],[0,2,0,1],[2,0,0,1],[0,0,2,1]])
-# dice = Dice(cube_definition)
 
 # CAMERA
 camera = CameraAxis()
