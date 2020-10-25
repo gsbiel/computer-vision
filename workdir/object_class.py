@@ -7,8 +7,7 @@ class Object:
         self.body = body_definition
 
         # Keeps track of the transformations suffered by the object
-        self.transformations_tracker = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
-        self.translation_tracker = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
+        self.translation_tracker = np.array([[1,0,0,0],[0,1,0,10],[0,0,1,-5],[0,0,0,1]])
         self.rotation_tracker = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
 
         self.x_orientation = 0
