@@ -12,7 +12,6 @@ from camera import CameraAxis
 from charizard import Charizard
 import time
 from mpl_toolkits.mplot3d import Axes3D
-
 from slider import MySlider
 
 OBJECTS = [
@@ -206,6 +205,27 @@ def cameraGoDown():
     update_canvas()
     return
 
+def cameraRotateX(angle):
+    remove_camera_from_canvas()
+    camera.rotateX(angle)
+    draw_camera_on_canvas()
+    update_canvas()
+    return
+
+def cameraRotateY(angle):
+    remove_camera_from_canvas()
+    camera.rotateY(angle)
+    draw_camera_on_canvas()
+    update_canvas()
+    return
+
+def cameraRotateZ(angle):
+    remove_camera_from_canvas()
+    camera.rotateZ(angle)
+    draw_camera_on_canvas()
+    update_canvas()
+    return
+
 # CANVAS FUNCTIONS ##########################################################################################################################
 
 def draw_camera_on_canvas():
@@ -345,6 +365,8 @@ def rotate_x_handler(current_orientation):
     # print('Rotate {value}'.format(value=rotation_angle))
     if currentObject.get() == OBJECTS[0][1]:
         charizardRotateX(rotation_angle)
+    else:
+        cameraRotateX(rotation_angle)
     return
 
 def rotate_y_handler(current_orientation):
@@ -354,6 +376,8 @@ def rotate_y_handler(current_orientation):
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
     if currentObject.get() == OBJECTS[0][1]:
         charizardRotateY(rotation_angle)
+    else:
+        cameraRotateY(rotation_angle)
     return
 
 def rotate_z_handler(current_orientation):
@@ -363,6 +387,8 @@ def rotate_z_handler(current_orientation):
     # print('Rotate {value}'.format(value=(y_rotation_value.get() - current_orientation)))
     if currentObject.get() == OBJECTS[0][1]:
         charizardRotateZ(rotation_angle)
+    else:
+        cameraRotateZ(rotation_angle)
     return
 
 # APP's ENTRY POINT  ###########################################################################################################################         
@@ -373,9 +399,9 @@ master.configure(background="white")
 master.bind("<Key>", on_key_press)
 
 left = Frame(master=master)
-left.pack(side=tkinter.LEFT, expand=False, fill=tkinter.Y)
+left.pack(side=tkinter.LEFT, expand=True, fill=tkinter.Y)
 center = Frame(master=master)
-center.pack(side=tkinter.LEFT,expand=True)
+center.pack(side=tkinter.LEFT,expand=False)
 right = Frame(master=master)
 right.pack(side=tkinter.LEFT,expand=False)
 
@@ -485,7 +511,7 @@ oy_slider = MySlider(intrinsic_params_container, oy_value, "oy", 0, 100, 10)
 oy_slider.pack(pady=1)
 
 # 3D PLOTTING AREA ##################################################################################################################
-fig = Figure(figsize=(9, 6), dpi=100)
+fig = Figure(figsize=(7, 6), dpi=100)
 ax = fig.add_subplot(1,1,1, projection='3d')
 
 canvas = FigureCanvasTkAgg(fig, master=center)  # A tk.DrawingArea.
@@ -496,6 +522,8 @@ canvas.mpl_connect("key_press_event", on_key_press)
 # 2D PLOTTING AREA ##################################################################################################################
 fig_2 = Figure(figsize=(5, 4), dpi=100)
 ax_2 = fig_2.add_subplot(1,1,1)
+ax_2.set_xlim([0, 640])
+ax_2.set_ylim([640, 0])
 canvas_2 = FigureCanvasTkAgg(fig_2, master=right)  # A tk.DrawingArea.
 canvas_2.draw()
 canvas_2.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
@@ -516,6 +544,8 @@ draw_charizard_on_canvas()
 update_canvas()
 # START MAIN LOOP #################################################################################################################
 master.mainloop()
+
+
 
 
 
