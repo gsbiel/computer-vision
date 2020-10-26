@@ -358,6 +358,17 @@ def on_key_press(event):
                 cameraGoDown()   
     return
 
+def selectedObjectChanged(object):
+    if object == OBJECTS[0][1] :
+        x_rotation_value.set(charizard.x_orientation)
+        y_rotation_value.set(charizard.y_orientation)
+        z_rotation_value.set(charizard.z_orientation)
+    else:
+        x_rotation_value.set(camera.x_orientation)
+        y_rotation_value.set(camera.y_orientation)
+        z_rotation_value.set(camera.z_orientation)
+    return
+
 def rotate_x_handler(current_orientation):
     rotation_angle = x_rotation_value.get()
     # print('Current orientation: {value}'.format(value=current_orientation))
@@ -407,6 +418,7 @@ right.pack(side=tkinter.LEFT,expand=False)
 
 currentObject = StringVar()
 currentObject.set(OBJECTS[0][1])
+# currentObject.trace("w", lambda *args: selectedObjectChanged(currentObject.get()))
 
 currentRotation = StringVar()
 currentRotation.set("NONE")
