@@ -4,10 +4,12 @@ from stl import mesh
 
 path_to_obj = "./3DModel/myCharizard.stl"
 
+reference_point = np.array([0, 10, -5, 1])
+
 class Charizard(Object):
 
   def __init__(self):
-    super().__init__(np.array([]))
+    super().__init__(np.array([]), reference_point)
     self.charizard_mesh = mesh.Mesh.from_file("./3DModel/myCharizard.stl")
 
     self.x = self.charizard_mesh.x.flatten()
@@ -16,6 +18,7 @@ class Charizard(Object):
 
     self.body = np.array([self.x, self.y, self.z, np.ones(self.x.size)])
     self.body = self.body.transpose()
+    self.initialBody = np.copy(self.body)
 
     self.generate_mesh()
     return
@@ -65,4 +68,5 @@ class Charizard(Object):
     data_array = np.array(zip_data)
     reshape = data_array.reshape(1572,3,3)
     self.vectors = reshape
+    return
 

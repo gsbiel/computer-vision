@@ -3,12 +3,34 @@ from math import pi, cos, sin
 
 class Object:
 
-    def __init__(self, body_definition):
-        self.body = body_definition
+    def __init__(self, body_definition, reference):
 
-        # Keeps track of the transformations suffered by the object
-        self.translation_tracker = np.array([[1,0,0,0],[0,1,0,10],[0,0,1,-5],[0,0,0,1]])
-        self.rotation_tracker = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
+        # This property stays unchanged
+        self.initialBody = np.copy(body_definition)
+        self.body = np.copy(body_definition)
+
+        self.axis_reference = reference
+        ref_x = reference[0]
+        ref_y= reference[1]
+        ref_z = reference[2]
+
+        # Matrix that converts coordinates from world's referential to object's referential
+        self.fromWorldToObjectReferentialMatrix = np.array([
+                                            [1, 0, 0, (-1)*ref_x],
+                                            [0, 1, 0, (-1)*ref_y],
+                                            [0, 0, 1, (-1)*ref_z],
+                                            [0, 0, 0,      1    ]
+                                        ])
+
+        self.fromObjectToWorldReferentialMatrix = np.linalg.inv(self.fromWorldToObjectReferentialMatrix)
+
+        # Keeps track of the translations suffered by the object
+        self.translation_tracker = np.array([
+                                                [1,0,0,0],
+                                                [0,1,0,0],
+                                                [0,0,1,0],
+                                                [0,0,0,1]
+                                            ])
 
         self.x_orientation = 0
         self.y_orientation = 0
@@ -19,14 +41,12 @@ class Object:
     def translateX(self, dx=1):
         translation_matrix = np.array([[1,0,0,dx], [0,1,0,0],[0,0,1,0],[0,0,0,1]])
         self.body = (translation_matrix.dot(self.body.transpose())).transpose()
-        # print(self.body)
         self.trackTranslation(translation_matrix)
         return
 
     def translateY(self, dy=1):
         translation_matrix = np.array([[1,0,0,0], [0,1,0,dy],[0,0,1,0],[0,0,0,1]])
         self.body = (translation_matrix.dot(self.body.transpose())).transpose()
-        # print(self.body)
         self.trackTranslation(translation_matrix)    
         return
 
@@ -56,48 +76,47 @@ class Object:
         return
 
     def rotateX(self, angle):
-        self.moveBackToInitialPosition()
+        # Abordagem corpo imutável na origem
+        self.body = np.copy(self.initialBody)
+        self.changeCoordinatesToReferentialInObject()
         self.x_orientation = angle
         rotation_matrix = self.get_rotation(self.z_orientation, angle, self.y_orientation)
         rotadedBody = rotation_matrix.dot(self.body.transpose())
         translatedBody = self.translation_tracker.dot(rotadedBody).transpose()
         self.body = translatedBody
-        self.trackRotation(rotation_matrix)
+        self.changeCoordinatesToReferentialInWorld()
         return
 
     def rotateY(self, angle):
-        self.moveBackToInitialPosition()
+        # Abordagem corpo imutável na origem
+        self.body = np.copy(self.initialBody)
+        self.changeCoordinatesToReferentialInObject()
         self.y_orientation = angle
         rotation_matrix = self.get_rotation(self.z_orientation, self.x_orientation, angle)
         rotadedBody = rotation_matrix.dot(self.body.transpose())
         translatedBody = self.translation_tracker.dot(rotadedBody).transpose()
         self.body = translatedBody
-        self.trackRotation(rotation_matrix)
+        self.changeCoordinatesToReferentialInWorld()
         return
 
     def rotateZ(self, angle):
-        self.moveBackToInitialPosition()
+        # Abordagem corpo imutável na origem
+        self.body = np.copy(self.initialBody)
+        self.changeCoordinatesToReferentialInObject()
         self.z_orientation = angle
         rotation_matrix = self.get_rotation(angle, self.x_orientation, self.y_orientation)
         rotadedBody = rotation_matrix.dot(self.body.transpose())
         translatedBody = self.translation_tracker.dot(rotadedBody).transpose()
         self.body = translatedBody
-        self.trackRotation(rotation_matrix)
+        self.changeCoordinatesToReferentialInWorld()
         return
 
-    def moveBackToInitialPosition(self):
-        self.translateBackToInitialPosition()
-        self.rotateBackToInitialPosition()
+    def changeCoordinatesToReferentialInObject(self):
+        self.body = self.fromWorldToObjectReferentialMatrix.dot(self.initialBody.transpose()).transpose()
         return
 
-    def translateBackToInitialPosition(self):
-        transformation =  np.linalg.inv(self.translation_tracker)
-        self.body = transformation.dot(self.body.transpose()).transpose()
-        return
-
-    def rotateBackToInitialPosition(self):
-        rotation_matrix = self.get_rotation(-self.z_orientation, -self.x_orientation, -self.y_orientation)
-        self.body = rotation_matrix.dot(self.body.transpose()).transpose()
+    def changeCoordinatesToReferentialInWorld(self):
+        self.body = self.fromObjectToWorldReferentialMatrix.dot(self.body.transpose()).transpose()
         return
 
     def get_rotation(self, theta_degree, phi_degree, alpha_degree):
@@ -127,9 +146,8 @@ class Object:
 
     def trackTranslation(self, translation_matrix):
         self.translation_tracker = translation_matrix.dot(self.translation_tracker)
+        self.fromWorldToObjectReferentialMatrix = np.linalg.inv(translation_matrix).dot(self.fromWorldToObjectReferentialMatrix)
+        self.fromObjectToWorldReferentialMatrix = np.linalg.inv(self.fromWorldToObjectReferentialMatrix)
         return
 
-    def trackRotation(self, rotation_matrix):
-        self.rotation_tracker = rotation_matrix
-        return
 
