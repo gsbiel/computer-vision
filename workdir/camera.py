@@ -81,7 +81,7 @@ class CameraAxis(Object):
         projectedObject = self.intrinsicMatrix.dot(self.projection_matrix.dot(extrinsic_params_matrix.dot(object.transpose()))).transpose()
         z_coordinates = projectedObject[:, -1]
         z_coordinates = z_coordinates.reshape(len(z_coordinates),1)
-        projectedObject = np.divide(projectedObject, z_coordinates)
+        # projectedObject = np.divide(projectedObject, z_coordinates)
         return projectedObject
 
     def setIntrinsicParams(self, f, sx, sy, stheta, ox, oy):

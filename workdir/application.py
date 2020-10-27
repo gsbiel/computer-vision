@@ -47,6 +47,7 @@ def charizardGoRight():
     charizard.translateX(1)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return 
 
 def charizardGoLeft():
@@ -54,6 +55,7 @@ def charizardGoLeft():
     charizard.translateX(-1)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardGoOn():
@@ -61,6 +63,7 @@ def charizardGoOn():
     charizard.translateY(1)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardGoBack():
@@ -68,13 +71,15 @@ def charizardGoBack():
     charizard.translateY(-1)  
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardGoUpLeft():
     remove_charizard_from_canvas()
     charizard.translateXY("01")
     draw_charizard_on_canvas()
-    update_canvas()    
+    update_canvas()  
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())  
     return
 
 def charizardGoUpRight():
@@ -82,6 +87,7 @@ def charizardGoUpRight():
     charizard.translateXY("11")
     draw_charizard_on_canvas()
     update_canvas() 
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardGoDownLeft():
@@ -89,6 +95,7 @@ def charizardGoDownLeft():
     charizard.translateXY("00")
     draw_charizard_on_canvas()
     update_canvas() 
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardGoDownRight():
@@ -96,6 +103,7 @@ def charizardGoDownRight():
     charizard.translateXY("10")
     draw_charizard_on_canvas()
     update_canvas() 
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardGoUp():
@@ -103,6 +111,7 @@ def charizardGoUp():
     charizard.translateZ(1)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardGoDown():
@@ -110,6 +119,7 @@ def charizardGoDown():
     charizard.translateZ(-1)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardRotateX(angle):
@@ -117,6 +127,7 @@ def charizardRotateX(angle):
     charizard.rotateX(angle)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardRotateY(angle):
@@ -124,6 +135,7 @@ def charizardRotateY(angle):
     charizard.rotateY(angle)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def charizardRotateZ(angle):
@@ -131,6 +143,7 @@ def charizardRotateZ(angle):
     charizard.rotateZ(angle)
     draw_charizard_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 # CAMERA MOVEMENT EVENTS ##################################################################################################################
@@ -140,6 +153,7 @@ def cameraGoRight():
     camera.translateX(1)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoLeft():
@@ -147,6 +161,7 @@ def cameraGoLeft():
     camera.translateX(-1)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoOn():
@@ -154,6 +169,7 @@ def cameraGoOn():
     camera.translateY(1)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoBack():
@@ -161,6 +177,7 @@ def cameraGoBack():
     camera.translateY(-1)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoUpLeft():
@@ -168,6 +185,7 @@ def cameraGoUpLeft():
     camera.translateXY("01")
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoUpRight():
@@ -175,6 +193,7 @@ def cameraGoUpRight():
     camera.translateXY("11")
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoDownLeft():
@@ -182,6 +201,7 @@ def cameraGoDownLeft():
     camera.translateXY("00")
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoDownRight():
@@ -189,6 +209,7 @@ def cameraGoDownRight():
     camera.translateXY("10")
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoUp():
@@ -196,6 +217,7 @@ def cameraGoUp():
     camera.translateZ(1)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraGoDown():
@@ -203,6 +225,7 @@ def cameraGoDown():
     camera.translateZ(-1)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraRotateX(angle):
@@ -210,6 +233,7 @@ def cameraRotateX(angle):
     camera.rotateX(angle)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraRotateY(angle):
@@ -217,6 +241,7 @@ def cameraRotateY(angle):
     camera.rotateY(angle)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 def cameraRotateZ(angle):
@@ -224,6 +249,7 @@ def cameraRotateZ(angle):
     camera.rotateZ(angle)
     draw_camera_on_canvas()
     update_canvas()
+    project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get())
     return
 
 # CANVAS FUNCTIONS ##########################################################################################################################
@@ -281,33 +307,6 @@ def set_axis_scale():
     # ax.set_zlim3d([0.0, 10.0])
     ax.set_zlim3d([-20.0, 10.0])
     ax.set_zlabel('Z')
-    return
-
-def set_axes_equal(ax, charizard):
-
-    ax.auto_scale_xyz(charizard.body[0,:],charizard.body[1,:],charizard.body[2,:])
-
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-
-    x_limits = ax.get_xlim3d()
-    y_limits = ax.get_ylim3d()
-    z_limits = ax.get_zlim3d()
-
-    x_range = abs(x_limits[1] - x_limits[0])
-    x_middle = np.mean(x_limits)
-    y_range = abs(y_limits[1] - y_limits[0])
-    y_middle = np.mean(y_limits)
-    z_range = abs(z_limits[1] - z_limits[0])
-    z_middle = np.mean(z_limits)
-
-    plot_radius = 0.5*max([x_range, y_range, z_range])
-
-    ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
-    ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
-    ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
-
     return
 
 # EVENT HANDLERS ############################################################################################################################
@@ -403,9 +402,18 @@ def rotate_z_handler(current_orientation):
     return
 
 def project_object(f, sx, sy, stheta, ox, oy):
-    print("Entrei aqui")
     camera.setIntrinsicParams(f, sx, sy, stheta, ox, oy)
-    camera.project(charizard.body)
+    projection = camera.project(charizard.body)
+    plotProjectionOnFigure(projection)
+    return
+
+def plotProjectionOnFigure(projection):
+    ax_2.clear()
+    # ax_2.set_xlim([0, 640])
+    # ax_2.set_ylim([640, 0])
+    ax_2.plot(projection[:,0], projection[:,1],'k.')
+    fig_2.canvas.draw()
+    time.sleep(0.01)
     return
 
 # APP's ENTRY POINT  ###########################################################################################################################         
