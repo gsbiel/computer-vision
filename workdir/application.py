@@ -402,6 +402,12 @@ def rotate_z_handler(current_orientation):
         cameraRotateZ(rotation_angle)
     return
 
+def project_object(f, sx, sy, stheta, ox, oy):
+    print("Entrei aqui")
+    camera.setIntrinsicParams(f, sx, sy, stheta, ox, oy)
+    camera.project(charizard.body)
+    return
+
 # APP's ENTRY POINT  ###########################################################################################################################         
 master = Tk()
 master.wm_title("Trab1")
@@ -436,22 +442,29 @@ z_rotation_value.set(0)
 z_rotation_value.trace("w", lambda *args: rotate_z_handler(z_current_orientation))
 
 f_value = tkinter.IntVar()
-f_value.set(0)
+f_value.set(350)
 
-sx_value = tkinter.IntVar()
-sx_value.set(0)
+sx_value = tkinter.DoubleVar()
+sx_value.set(3.5)
 
-sy_value = tkinter.IntVar()
-sy_value.set(0)
+sy_value = tkinter.DoubleVar()
+sy_value.set(5.3)
 
-stheta_value = tkinter.IntVar()
+stheta_value = tkinter.DoubleVar()
 stheta_value.set(0)
 
 ox_value = tkinter.IntVar()
-ox_value.set(0)
+ox_value.set(99)
 
 oy_value = tkinter.IntVar()
-oy_value.set(0)
+oy_value.set(177)
+
+f_value.trace("w", lambda *args: project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get()))
+sx_value.trace("w", lambda *args: project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get()))
+sy_value.trace("w", lambda *args: project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get()))
+stheta_value.trace("w", lambda *args: project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get()))
+ox_value.trace("w", lambda *args: project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get()))
+oy_value.trace("w", lambda *args: project_object(f_value.get(), sx_value.get(), sy_value.get(), stheta_value.get(), ox_value.get(), oy_value.get()))
 
 # TOGGLE BUTTONS - DICE AND CAMERA SELECTORS ######################################################################################
 
@@ -516,10 +529,10 @@ sy_slider.pack(pady=1)
 s_theta_slider = MySlider(intrinsic_params_container, stheta_value,"s_theta", 0, 10, 0.1)
 s_theta_slider.pack(pady=1)
 
-ox_slider = MySlider(intrinsic_params_container, ox_value, "ox", 0, 1000, 10)
+ox_slider = MySlider(intrinsic_params_container, ox_value, "ox", 0, 640, 10)
 ox_slider.pack(pady=1)
 
-oy_slider = MySlider(intrinsic_params_container, oy_value, "oy", 0, 100, 10)
+oy_slider = MySlider(intrinsic_params_container, oy_value, "oy", 0, 480, 10)
 oy_slider.pack(pady=1)
 
 # 3D PLOTTING AREA ##################################################################################################################
