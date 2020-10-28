@@ -7,6 +7,7 @@ OBJECTS = [
 
 STYLING_PARAMETERS = {
   "masterFrame_pady":20,
+  "masterFrame_padx":30,
   "labelView_width":16,
   "buttons_width": 15,
 }
@@ -21,7 +22,10 @@ class ObjectSelectorView:
 
     # Master frame
     self._masterFrame = tkinter.Frame(parentView)
-    self._masterFrame.pack(pady=STYLING_PARAMETERS['masterFrame_pady'])
+    self._masterFrame.pack(
+                            padx=STYLING_PARAMETERS['masterFrame_padx'],
+                            pady=STYLING_PARAMETERS['masterFrame_pady']
+                          )
 
     # Label
     self._viewLabel = tkinter.Label(  
