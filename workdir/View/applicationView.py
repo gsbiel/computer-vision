@@ -1,6 +1,7 @@
 import tkinter
 
 from View.ViewComponents.objSelectorView import ObjectSelectorView
+from View.ViewComponents.rotationControlsView import RotationControlsView
 class ApplicationView:
 
   def __init__(self, viewModel, title="Trabalho 1"):
@@ -21,6 +22,7 @@ class ApplicationView:
 
     # User controls
     self._objSelectorView = ObjectSelectorView(self._left, viewModel)
+    self._rotationControlsView = RotationControlsView(self._left, viewModel)
     self.registerForEvents(viewModel)
     return
 
