@@ -1,10 +1,11 @@
 import tkinter
 
+from ViewModel.appViewModelInterface import ApplicationViewModelInterface 
 from View.ViewComponents.camParamsView import CameraParamsView
 from View.ViewComponents.objSelectorView import ObjectSelectorView
 from View.ViewComponents.rotationControlsView import RotationControlsView
 
-class ApplicationView:
+class ApplicationView(ApplicationViewModelInterface):
 
   def __init__(self, viewModel, title="Trabalho 1"):
     # Master Frame
@@ -14,7 +15,7 @@ class ApplicationView:
 
     # Children frames
     self._left = tkinter.Frame(master=self._master)
-    self._left.pack(side=tkinter.LEFT, expand=True, fill=tkinter.Y)
+    self._left.pack(side=tkinter.LEFT,expand=True, fill=tkinter.Y)
 
     self._center = tkinter.Frame(master=self._master)
     self._center.pack(side=tkinter.LEFT,expand=False)
@@ -45,9 +46,22 @@ class ApplicationView:
 
   # METHODS ####################################################################
   def registerForEvents(self, viewModel):
-    self._master.bind("<Key>", viewModel.onKeyboardPressed)
+    self._master.bind("<Key>", lambda event: viewModel.onKeyboardPressed(event.keysym))
     return
 
   def startMainLoop(self):
     self._master.mainloop()
+    return
+
+  # PROTOCOLS ##################################################################
+  def cameraViewShouldUpdate(self):
+    print("Câmera deve atualizar!")
+    return
+
+  def objectViewShouldUpdate(self):
+    print("Objeto deve atualizar!")
+    return
+  
+  def projectionPlotShouldUpdate(self):
+    print("Projeção deve atualizar!")
     return
