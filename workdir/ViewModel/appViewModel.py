@@ -1,3 +1,5 @@
+import numpy as np
+
 class ApplicationViewModel:
 
   def __init__(self):
@@ -26,3 +28,9 @@ class ApplicationViewModel:
   def zOrientationChanged(self, orientation):
     print('Z orientation changed to: {value}'.format(value=orientation))
     return
+
+  def intrinsincParamsChanged(self, f, sx, sy, stheta, ox, oy):
+    print('Intrinsic params changed to: {value}'.format(value=np.array([[f,sx,sy, stheta, ox, oy]]).transpose()))  
+    return
+
+  
