@@ -1,5 +1,6 @@
 import tkinter
 
+from View.ViewComponents.objSelectorView import ObjectSelectorView
 class ApplicationView:
 
   def __init__(self, viewModel, title="Trabalho 1"):
@@ -18,6 +19,8 @@ class ApplicationView:
     self._right = tkinter.Frame(master=self._master)
     self._right.pack(side=tkinter.LEFT,expand=False)
 
+    # User controls
+    self._objSelectorView = ObjectSelectorView(self._left, viewModel)
     self.registerForEvents(viewModel)
     return
 
