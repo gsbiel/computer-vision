@@ -10,6 +10,16 @@ OBJECT_STYLING = {
   "linestyles":"-"
 }
 
+CAMERA_STYLYING = {
+  "arrowsLength": 2
+}
+
+AXIS_COLORS = [
+    "b", # color for x-axis
+    "g", # color for z-axis
+    "r"  # color for y-axis
+]
+
 class WorldView:
 
   def __init__(self, parentView, viewModel):
@@ -20,21 +30,20 @@ class WorldView:
     self._canvas.draw()
     self._canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
-    self.updateObject(viewModel.get_objectMesh())
+    self.updateFigure(viewModel)
     return
 
-  # PUBLIC METHODS #############################################################
-  def updateCamera(self, cameraBody):
-    # self.__resetFigure(self._ax)
-    return
+  # PUBLIC METHODS #####################################################################################################
 
-  def updateObject(self, objectVectors):
+  def updateFigure(self, viewModel):
     self.__refreshFigure(self._ax)
-    self.__drawObject(self._ax, objectVectors)
+    self.__drawObject(self._ax, viewModel.get_objectMesh())
+    self.__drawCamera(self._ax, viewModel.get_cameraMainPoint(), viewModel.get_cameraDirectionVectors())
     self.__updateCanvas()
     return
 
   # PRIVATE METHODS ####################################################################################################
+  
   def __updateCanvas(self):
     self._fig.canvas.draw()
     time.sleep(0.01)
@@ -49,6 +58,21 @@ class WorldView:
                                           linestyles= OBJECT_STYLING["linestyles"], 
                                         ))
     return
+
+  def __drawCamera(self, ax, mainPoint, directions):
+      for index in range(directions.shape[0]):
+          ax.quiver(
+              mainPoint[0][0], 
+              mainPoint[0][1], 
+              mainPoint[0][2], 
+              directions[index][0], 
+              directions[index][1], 
+              directions[index][2], 
+              length = CAMERA_STYLYING["arrowsLength"], 
+              normalize=True, 
+              color=AXIS_COLORS[index]
+          )
+      return
 
   def __refreshFigure(self, ax):
     self.__cleanFigure(ax)
