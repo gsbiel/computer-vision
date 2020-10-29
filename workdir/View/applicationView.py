@@ -10,6 +10,9 @@ from View.projectionView import ProjectionView
 class ApplicationView(ApplicationViewModelInterface):
 
   def __init__(self, viewModel, title="Trabalho 1"):
+
+    self._viewModel = viewModel
+
     # Master Frame
     self._master = tkinter.Tk()
     self._master.wm_title(title)
@@ -60,14 +63,10 @@ class ApplicationView(ApplicationViewModelInterface):
     return
 
   # PROTOCOLS ##################################################################
-  def cameraViewShouldUpdate(self):
-    print("Câmera deve atualizar!")
-    return
-
-  def objectViewShouldUpdate(self):
-    print("Objeto deve atualizar!")
+  def worldViewShouldUpdate(self):
+    self._worldView.updateFigure(self._viewModel)
     return
   
-  def projectionPlotShouldUpdate(self):
+  def projectionViewShouldUpdate(self):
     print("Projeção deve atualizar!")
     return
