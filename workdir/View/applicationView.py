@@ -31,7 +31,7 @@ class ApplicationView(ApplicationViewModelInterface):
     self._cameraParamsView = CameraParamsView(self._left, viewModel)
     
     # Plotting Areas
-    self._worldView = WorldView(self._center)
+    self._worldView = WorldView(self._center, viewModel)
     self._projectionView = ProjectionView(self._right)
 
     self.registerForEvents(viewModel)

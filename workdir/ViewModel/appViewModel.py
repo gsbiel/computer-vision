@@ -1,11 +1,15 @@
 import numpy as np
+from Model.object import ObjectModel
 
 class ApplicationViewModel:
 
   def __init__(self):
-
+    self._objectModel = ObjectModel(referenceInObject)
     return
 
+  # GETTERS ############################################################################################################
+  def get_objectMesh(self):
+    return self._objectModel.get_objectVectors()
   
   # GUI EVENTS #################################################################
   
