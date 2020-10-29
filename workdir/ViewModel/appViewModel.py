@@ -11,7 +11,8 @@ class ApplicationViewModel:
     self.delegate = None
     self._cameraModel = CameraModel(
                                       np.array([referenceInCamera]), 
-                                      np.array([[1,0,0,1],[0,1,0,1],[0,0,1,1]])
+                                      np.array([[1,0,0,1],[0,1,0,1],[0,0,1,1]]),
+                                      referenceInCamera
                                     )
     self._objectModel = ObjectModel(referenceInObject)
     return

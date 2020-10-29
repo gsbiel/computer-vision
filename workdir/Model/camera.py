@@ -3,8 +3,10 @@ from .rigidBody import RigidBodyModel
 
 class CameraModel(RigidBodyModel):
 
-  # INIT ######################################################################
-  def __init__(self, p_0, p_1):
+  # INIT ############################################################################################
+  
+  def __init__(self, p_0, p_1, reference_point):
+    super().__init__(p_0, reference_point)
     self._p_0 = p_0
     self._p_1 = p_1
     self._initialBody = np.copy(p_1)
@@ -17,7 +19,8 @@ class CameraModel(RigidBodyModel):
                                 ])
     return
 
-  # GETTERS ###################################################################
+  # GETTERS #########################################################################################
+  
   def get_mainPoint(self):
     return self._p_0
   
@@ -36,6 +39,27 @@ class CameraModel(RigidBodyModel):
   def get_projectionMatrix(self):
     return self._projection_matrix
 
-  # SETTERS ####################################################################
+  # SETTERS ##########################################################################################
 
+  # PUBLIC METHODS ###################################################################################
+  
+  def translateX(self, dx):
+    super().translateX(dx)
+    self._p_0 = self._body
+    return
+
+  def translateY(self, dy):
+    super().translateY(dy)
+    self._p_0 = self._body
+    return
+
+  def translateZ(self, dz):
+    super().translateZ(dz)
+    self._p_0 = self._body
+    return
+
+  def translateXY(self, code, d=1):
+    super().translateXY(code, d)
+    self._p_0 = self._body
+    return
   
