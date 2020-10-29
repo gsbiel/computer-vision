@@ -28,6 +28,9 @@ class ObjectModel(RigidBodyModel):
   def get_objectVectors(self):
     return np.copy(self._vectors)
 
+  def get_objectBody(self):
+    return np.copy(self._body)
+
   # PUBLIC METHODS ####################################################################################################
 
   def translateX(self, dx=1):

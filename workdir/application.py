@@ -409,12 +409,13 @@ def project_object(f, sx, sy, stheta, ox, oy):
 
 def plotProjectionOnFigure(projection):
     ax_2.clear()
-    # ax_2.set_xlim([0, 640])
-    # ax_2.set_ylim([640, 0])
+    ax_2.set_xlim([0, 5000])
+    ax_2.set_ylim([5000, 0])
     ax_2.plot(projection[:,0], projection[:,1],'k.')
     fig_2.canvas.draw()
     time.sleep(0.01)
     return
+    
 
 # APP's ENTRY POINT  ###########################################################################################################################         
 master = Tk()

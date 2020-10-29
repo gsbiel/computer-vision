@@ -17,6 +17,7 @@ class CameraModel(RigidBodyModel):
                                     [0,1,0,0],
                                     [0,0,1,0]
                                 ])
+    self._projectedObject = np.array([])
     return
 
   # GETTERS #########################################################################################
@@ -30,6 +31,9 @@ class CameraModel(RigidBodyModel):
   def get_initialBody(self):
     return self._initialBody
 
+  def get_projectedObject(self):
+    return np.copy(self._projectedObject)
+
   def get_translationTracker(self):
     return self._translation_tracker
 
@@ -40,6 +44,14 @@ class CameraModel(RigidBodyModel):
     return self._projection_matrix
 
   # SETTERS ##########################################################################################
+  
+  def setIntrinsicParams(self, f, sx, sy, stheta, ox, oy):
+    self._intrinsicMatrix = np.array([
+                                        [f*sx, f*stheta, ox],
+                                        [ 0,     f*sy,   oy],
+                                        [ 0,      0,      1]
+                                    ])
+    return
 
   # PUBLIC METHODS ###################################################################################
   
@@ -89,4 +101,15 @@ class CameraModel(RigidBodyModel):
     self._p_1 = rotadedBody.transpose()
     self._body = self._p_0
     return
+
+  def project(self, object):
+    inverse_rotation = super().get_rotation(-self._z_orientation, -self._x_orientation, -self._y_orientation)
+    inverse_translation = np.linalg.inv(self._translation_tracker)
+    identity = np.eye(4)
+    extrinsic_params_matrix = inverse_rotation.dot(inverse_translation.dot(identity))
+    self._projectedObject = self._intrinsicMatrix.dot(self._projection_matrix.dot(extrinsic_params_matrix.dot(object.transpose()))).transpose()
+    z_coordinates = self._projectedObject[:, -1]
+    z_coordinates = z_coordinates.reshape(len(z_coordinates),1)
+    # projectedObject = np.divide(projectedObject, z_coordinates)
+    return 
   

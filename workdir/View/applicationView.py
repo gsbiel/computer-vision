@@ -35,7 +35,7 @@ class ApplicationView(ApplicationViewModelInterface):
     
     # Plotting Areas
     self._worldView = WorldView(self._center, viewModel)
-    self._projectionView = ProjectionView(self._right)
+    self._projectionView = ProjectionView(self._right, viewModel)
 
     self.registerForEvents(viewModel)
     return
@@ -68,5 +68,5 @@ class ApplicationView(ApplicationViewModelInterface):
     return
   
   def projectionViewShouldUpdate(self):
-    print("Projeção deve atualizar!")
+    self._projectionView.updateFigure(self._viewModel)
     return
