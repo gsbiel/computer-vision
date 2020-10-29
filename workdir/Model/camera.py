@@ -62,4 +62,31 @@ class CameraModel(RigidBodyModel):
     super().translateXY(code, d)
     self._p_0 = self._body
     return
+
+  def rotateX(self, angle):
+    self._body = np.copy(self._initialBody)
+    self._x_orientation = angle
+    rotation_matrix = super().get_rotation(self._z_orientation, angle, self._y_orientation)
+    rotadedBody = rotation_matrix.dot(self._body.transpose())
+    self._p_1 = rotadedBody.transpose()
+    self._body = self._p_0
+    return
+
+  def rotateY(self, angle):
+    self._body = np.copy(self._initialBody)
+    self._y_orientation = angle
+    rotation_matrix = super().get_rotation(self._z_orientation, self._x_orientation, angle)
+    rotadedBody = rotation_matrix.dot(self._body.transpose())
+    self._p_1 = rotadedBody.transpose()
+    self._body = self._p_0
+    return
+
+  def rotateZ(self, angle):
+    self._body = np.copy(self._initialBody)
+    self._z_orientation = angle
+    rotation_matrix = super().get_rotation(angle, self._x_orientation, self._y_orientation)
+    rotadedBody = rotation_matrix.dot(self._body.transpose())
+    self._p_1 = rotadedBody.transpose()
+    self._body = self._p_0
+    return
   

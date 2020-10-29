@@ -2,6 +2,11 @@ import numpy as np
 from Model.camera import CameraModel
 from Model.object import ObjectModel
 
+OBJECTS = [
+  ("Object", "OBJECT"),
+  ("Camera Axis", "CAMERA"),
+]
+
 referenceInCamera = np.array([12,-20,0,1])
 referenceInObject = np.array([0, 10, -5, 1])
 
@@ -9,6 +14,7 @@ class ApplicationViewModel:
 
   def __init__(self):
     self.delegate = None
+    self._currentObject = OBJECTS[0][1]
     self._cameraModel = CameraModel(
                                       np.array([referenceInCamera]), 
                                       np.array([[1,0,0,1],[0,1,0,1],[0,0,1,1]]),
@@ -20,13 +26,13 @@ class ApplicationViewModel:
   # GETTERS ############################################################################################################
   def get_objectMesh(self):
     return self._objectModel.get_objectVectors()
-  
+
   def get_cameraMainPoint(self):
     return self._cameraModel.get_mainPoint()
 
   def get_cameraDirectionVectors(self):
     return self._cameraModel.get_directionVectors()
-  
+
   # GUI EVENTS #########################################################################################################
   
   def onKeyboardPressed(self, key):
@@ -96,19 +102,34 @@ class ApplicationViewModel:
     return
 
   def selectedObjectChanged(self, currentObject):
-    print('Object changed to: {value}'.format(value=currentObject))
+    self._currentObject = currentObject
     return
 
   def xOrientationChanged(self, orientation):
-    print('X orientation changed to: {value}'.format(value=orientation))
+    if self._currentObject == OBJECTS[0][1]:
+      self._objectModel.rotateX(orientation)
+    else:
+      self._cameraModel.rotateX(orientation)
+
+    self.delegate.worldViewShouldUpdate()
     return
 
   def yOrientationChanged(self, orientation):
-    print('Y orientation changed to: {value}'.format(value=orientation))
+    if self._currentObject == OBJECTS[0][1]:
+      self._objectModel.rotateY(orientation)
+    else:
+      self._cameraModel.rotateY(orientation)
+
+    self.delegate.worldViewShouldUpdate()
     return
 
   def zOrientationChanged(self, orientation):
-    print('Z orientation changed to: {value}'.format(value=orientation))
+    if self._currentObject == OBJECTS[0][1]:
+      self._objectModel.rotateZ(orientation)
+    else:
+      self._cameraModel.rotateZ(orientation)
+
+    self.delegate.worldViewShouldUpdate()
     return
 
   def intrinsincParamsChanged(self, f, sx, sy, stheta, ox, oy):

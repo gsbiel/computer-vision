@@ -82,7 +82,7 @@ class RigidBodyModel:
     self._body = np.copy(self._initialBody)
     self.__changeCoordinatesToReferentialInObject()
     self._x_orientation = angle
-    rotation_matrix = self.__get_rotation(self._z_orientation, angle, self._y_orientation)
+    rotation_matrix = self.get_rotation(self._z_orientation, angle, self._y_orientation)
     rotadedBody = rotation_matrix.dot(self._body.transpose())
     translatedBody = self._translation_tracker.dot(rotadedBody).transpose()
     self._body = translatedBody
@@ -94,7 +94,7 @@ class RigidBodyModel:
     self._body = np.copy(self._initialBody)
     self.__changeCoordinatesToReferentialInObject()
     self._y_orientation = angle
-    rotation_matrix = self.__get_rotation(self._z_orientation, self._x_orientation, angle)
+    rotation_matrix = self.get_rotation(self._z_orientation, self._x_orientation, angle)
     rotadedBody = rotation_matrix.dot(self._body.transpose())
     translatedBody = self._translation_tracker.dot(rotadedBody).transpose()
     self._body = translatedBody
@@ -106,7 +106,7 @@ class RigidBodyModel:
     self._body = np.copy(self._initialBody)
     self.__changeCoordinatesToReferentialInObject()
     self._z_orientation = angle
-    rotation_matrix = self.__get_rotation(angle, self._x_orientation, self._y_orientation)
+    rotation_matrix = self.get_rotation(angle, self._x_orientation, self._y_orientation)
     rotadedBody = rotation_matrix.dot(self._body.transpose())
     translatedBody = self._translation_tracker.dot(rotadedBody).transpose()
     self._body = translatedBody
@@ -123,7 +123,7 @@ class RigidBodyModel:
     self._body = self._fromObjectToWorldReferentialMatrix.dot(self._body.transpose()).transpose()
     return
 
-  def __get_rotation(self, theta_degree, phi_degree, alpha_degree):
+  def get_rotation(self, theta_degree, phi_degree, alpha_degree):
     theta = (theta_degree * pi)/180.0
     phi = (phi_degree * pi)/180.0
     alfa = (alpha_degree * pi)/180.0
