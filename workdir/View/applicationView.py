@@ -5,6 +5,7 @@ from View.ViewComponents.camParamsView import CameraParamsView
 from View.ViewComponents.objSelectorView import ObjectSelectorView
 from View.ViewComponents.rotationControlsView import RotationControlsView
 from View.worldView import WorldView
+from View.projectionView import ProjectionView
 
 class ApplicationView(ApplicationViewModelInterface):
 
@@ -31,6 +32,8 @@ class ApplicationView(ApplicationViewModelInterface):
     
     # Plotting Areas
     self._worldView = WorldView(self._center)
+    self._projectionView = ProjectionView(self._right)
+
     self.registerForEvents(viewModel)
     return
 
