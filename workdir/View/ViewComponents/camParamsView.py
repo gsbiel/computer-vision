@@ -11,27 +11,33 @@ STYLING_PARAMETERS = {
 CONFIG_PARAMS = {
   "f_minimum_value":0,
   "f_maximum_value":1000,
-  "f_step":10,
+  "f_step":2,
+  "initial_f":2,
 
   "sx_minimum_value":0,
   "sx_maximum_value":10,
   "sx_step":0.1,
+  "initial_sx":4.7,
 
   "sy_minimum_value":0,
   "sy_maximum_value":10,
   "sy_step":0.1,
+  "initial_sy":6.5,
 
   "stheta_minimum_value":0,
   "stheta_maximum_value":10,
   "stheta_step":0.1,
+  "initial_stheta":0.0,
 
   "ox_minimum_value":0,
   "ox_maximum_value":640,
   "ox_step":10,
+  "initial_ox":60,
 
   "oy_minimum_value":0,
   "oy_maximum_value":480,
   "oy_step":10,
+  "initial_oy":60,
 }
 
 class CameraParamsView:
@@ -40,22 +46,22 @@ class CameraParamsView:
 
     # STATE VARIABLES
     self._f_value = tkinter.IntVar()
-    self._f_value.set(350)
+    self._f_value.set(CONFIG_PARAMS["initial_f"])
 
     self._sx_value = tkinter.DoubleVar()
-    self._sx_value.set(3.5)
+    self._sx_value.set(CONFIG_PARAMS["initial_sx"])
 
     self._sy_value = tkinter.DoubleVar()
-    self._sy_value.set(5.3)
+    self._sy_value.set(CONFIG_PARAMS["initial_sy"])
 
     self._stheta_value = tkinter.DoubleVar()
-    self._stheta_value.set(0)
+    self._stheta_value.set(CONFIG_PARAMS["initial_stheta"])
 
     self._ox_value = tkinter.IntVar()
-    self._ox_value.set(99)
+    self._ox_value.set(CONFIG_PARAMS["initial_ox"])
 
     self._oy_value = tkinter.IntVar()
-    self._oy_value.set(177)
+    self._oy_value.set(CONFIG_PARAMS["initial_oy"])
 
     # Container
     self.masterFrame = tkinter.Frame(parentView)

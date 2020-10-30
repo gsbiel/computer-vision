@@ -86,9 +86,9 @@ class ObjectModel(RigidBodyModel):
   def __moveInitialPositionToFirstQuadrant(self, dx,dy,dz):
     """
     O objeto STL não está situado no primeiro quadrante.
-    Essa função move todos os pontos do objeto para o primeiro quadrante e atualiza
-    o ponto de referência e as matrizes de mudança de coordenadas para se adequarem à nova posição
-    do objeto.
+    Essa função move todos os pontos do objeto para o primeiro quadrante e atualiza o valores
+    iniciais do ponto de referência e das matrizes de mudança de coordenadas para se 
+    adequarem à nova posição inicial do objeto.
     """
     translationMatrix = np.array([
                                   [1, 0, 0, dx],
