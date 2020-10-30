@@ -110,6 +110,6 @@ class CameraModel(RigidBodyModel):
     self._projectedObject = self._intrinsicMatrix.dot(self._projection_matrix.dot(extrinsic_params_matrix.dot(object.transpose()))).transpose()
     z_coordinates = self._projectedObject[:, -1]
     z_coordinates = z_coordinates.reshape(len(z_coordinates),1)
-    # projectedObject = np.divide(projectedObject, z_coordinates)
+    self._projectedObject = np.divide(self._projectedObject, z_coordinates)
     return 
   

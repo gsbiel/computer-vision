@@ -8,8 +8,10 @@ class ProjectionView:
     self._masterView = parentView
     self._fig = Figure(figsize=(5, 4), dpi=100)
     self._ax = self._fig.add_subplot(1,1,1)
-    self._ax.set_xlim([0, 640])
-    self._ax.set_ylim([640, 0])
+    # self._ax.set_xlim([0, 640])
+    # self._ax.set_ylim([640, 0])
+    # self._ax.set_xlim([-5000, 5000])
+    # self._ax.set_ylim([-5000, 5000])
     self._canvas = FigureCanvasTkAgg(self._fig, master=self._masterView)  # A tk.DrawingArea.
     self._canvas.draw()
     self._canvas.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
@@ -26,7 +28,7 @@ class ProjectionView:
 
   def __drawProjection(self, viewModel):
     projection = viewModel.get_cameraProjection()
-    self._ax.plot(projection[:,0], projection[:,1],'k.')
+    self._ax.plot(projection[:,0], projection[:,1],'k')
     return
 
   def __refreshFigure(self, ax):
@@ -44,6 +46,8 @@ class ProjectionView:
     return
 
   def __set_axis_scale(self, ax):
-    ax.set_xlim([0, 640])
-    ax.set_ylim([640, 0])
+    # ax.set_xlim([0, 640])
+    # ax.set_ylim([640, 0])
+    # self._ax.set_xlim([-5000, 5000])
+    # self._ax.set_ylim([-5000, 5000])
     return
