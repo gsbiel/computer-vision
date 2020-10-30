@@ -81,13 +81,16 @@ class WorldView:
 
   def __set_axis_scale(self, ax):
     # X axis
-    ax.set_xlim3d([-15.0, 15.0])
+    # ax.set_xlim3d([-15.0, 15.0])
+    ax.set_xlim3d([0, 30.0])
     ax.set_xlabel('X')
     # Y axis
-    ax.set_ylim3d([-5.0, 25.0])
+    # ax.set_ylim3d([-5.0, 25.0])
+    ax.set_ylim3d([0, 30.0])
     ax.set_ylabel('Y')
     # Z axis
-    ax.set_zlim3d([-20.0, 10.0])
+    # ax.set_zlim3d([-20.0, 10.0])
+    ax.set_zlim3d([0, 30.0])
     ax.set_zlabel('Z')
     return
 
