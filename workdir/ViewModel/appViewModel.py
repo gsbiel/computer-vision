@@ -7,7 +7,7 @@ OBJECTS = [
   ("Camera Axis", "CAMERA"),
 ]
 
-referenceInCamera = np.array([12,-20,0,1])
+referenceInCamera = np.array([0,0,0,1])
 referenceInObject = np.array([0, 10, -5, 1])
 
 class ApplicationViewModel:
