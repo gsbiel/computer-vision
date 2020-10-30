@@ -20,6 +20,8 @@ class ObjectModel(RigidBodyModel):
     self._body = self._body.transpose()
     self._initialBody = np.copy(self._body)
 
+    self.__moveInitialPositionToFirstQuadrant(15,5,20)
+
     self._vectors = np.array([])
     self.__generate_mesh()
     return
@@ -79,6 +81,42 @@ class ObjectModel(RigidBodyModel):
     data_array = np.array(zip_data)
     reshape = data_array.reshape(1572,3,3)
     self._vectors = reshape
+    return
+
+  def __moveInitialPositionToFirstQuadrant(self, dx,dy,dz):
+    """
+    O objeto STL não está situado no primeiro quadrante.
+    Essa função move todos os pontos do objeto para o primeiro quadrante e atualiza
+    o ponto de referência e as matrizes de mudança de coordenadas para se adequarem à nova posição
+    do objeto.
+    """
+    translationMatrix = np.array([
+                                  [1, 0, 0, dx],
+                                  [0, 1, 0, dy],
+                                  [0, 0, 1, dz],
+                                  [0, 0, 0, 1 ]
+                                ])
+
+    bodyInFirstQuadrant = translationMatrix.dot(self._body.transpose()).transpose()
+    referenceInFirstQuadrant = translationMatrix.dot(self._axis_reference.transpose()).transpose()
+    ref_x_firstQuadrant = referenceInFirstQuadrant[0]
+    ref_y_firstQuadrant = referenceInFirstQuadrant[1]
+    ref_z_firstQuadrant = referenceInFirstQuadrant[2]
+
+    self._body = np.copy(bodyInFirstQuadrant)
+    self._initialBody = np.copy(bodyInFirstQuadrant)
+    self._axis_reference = np.copy(referenceInFirstQuadrant)
+
+    # Matrix that converts coordinates from world's referential to object's referential
+    self._fromWorldToObjectReferentialMatrix = np.array([
+                                        [1, 0, 0, (-1)*ref_x_firstQuadrant],
+                                        [0, 1, 0, (-1)*ref_y_firstQuadrant],
+                                        [0, 0, 1, (-1)*ref_z_firstQuadrant],
+                                        [0, 0, 0,                1        ]
+                                    ])
+
+    self._fromObjectToWorldReferentialMatrix = np.linalg.inv(self._fromWorldToObjectReferentialMatrix)
+    
     return
 
 
