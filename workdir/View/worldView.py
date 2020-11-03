@@ -37,7 +37,8 @@ class WorldView:
 
   def updateFigure(self, viewModel):
     self.__refreshFigure(self._ax)
-    self.__drawObject(self._ax, viewModel.get_objectMesh())
+    # self.__drawObject(self._ax, viewModel.get_objectMesh())
+    self.__drawXYZ(self._ax, viewModel.get_xyzPoints())
     self.__drawCamera(self._ax, viewModel.get_cameraMainPoint(), viewModel.get_cameraDirectionVectors())
     self.__updateCanvas()
     return
@@ -47,6 +48,10 @@ class WorldView:
   def __updateCanvas(self):
     self._fig.canvas.draw()
     time.sleep(0.01)
+    return
+  
+  def __drawXYZ(self, ax, objectPoints):
+    ax.plot3D(objectPoints[:,0],objectPoints[:,1],objectPoints[:,2], 'k')
     return
   
   def __drawObject(self, ax, objectVectors):

@@ -1,6 +1,7 @@
 import numpy as np
 from Model.camera import CameraModel
 from Model.object import ObjectModel
+from Model.house import HouseModel
 
 OBJECTS = [
   ("Object", "OBJECT"),
@@ -21,6 +22,7 @@ class ApplicationViewModel:
                                       referenceInCamera
                                     )
     self._objectModel = ObjectModel(referenceInObject)
+    self._houseModel = HouseModel()
 
     return
 
@@ -33,6 +35,9 @@ class ApplicationViewModel:
 
   def get_cameraDirectionVectors(self):
     return self._cameraModel.get_directionVectors()
+
+  def get_xyzPoints(self):
+    return self._houseModel.get_points()
 
   def get_cameraProjection(self):
     return self._cameraModel.get_projectedObject()
