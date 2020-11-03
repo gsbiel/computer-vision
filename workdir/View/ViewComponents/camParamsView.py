@@ -32,12 +32,13 @@ CONFIG_PARAMS = {
   "ox_minimum_value":0,
   "ox_maximum_value":640,
   "ox_step":10,
-  "initial_ox":60,
+  "initial_ox":10,
 
   "oy_minimum_value":0,
   "oy_maximum_value":480,
   "oy_step":10,
-  "initial_oy":60,
+  # "initial_oy":60,
+  "initial_oy":10,
 }
 
 class CameraParamsView:
