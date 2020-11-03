@@ -15,9 +15,9 @@ CAMERA_STYLYING = {
 }
 
 AXIS_COLORS = [
-    "b", # color for x-axis
-    "g", # color for z-axis
-    "r"  # color for y-axis
+    "r", # color for x-axis
+    "g", # color for y-axis
+    "b"  # color for z-axis
 ]
 
 class WorldView:
