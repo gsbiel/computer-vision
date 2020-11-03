@@ -49,7 +49,7 @@ class WorldView:
     self._fig.canvas.draw()
     time.sleep(0.01)
     return
-  
+
   def __drawXYZ(self, ax, objectPoints):
     ax.plot3D(objectPoints[:,0],objectPoints[:,1],objectPoints[:,2], 'k')
     return

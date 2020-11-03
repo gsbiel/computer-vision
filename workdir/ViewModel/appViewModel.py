@@ -48,18 +48,22 @@ class ApplicationViewModel:
     if self._currentObject == OBJECTS[0][1]:
       if key == "KP_6":
         self._objectModel.translateX(1) # Go Right (X+)
+        self._houseModel.translateX(1)
         self.delegate.worldViewShouldUpdate()
         self.__updateProjection()
       elif key == "KP_4":
         self._objectModel.translateX(-1) # Go Left (X-)
+        self._houseModel.translateX(-1)
         self.delegate.worldViewShouldUpdate()
         self.__updateProjection()
       elif key == "KP_8":
         self._objectModel.translateY(1) # Go On (Y+)
+        self._houseModel.translateY(1)
         self.delegate.worldViewShouldUpdate()
         self.__updateProjection()
       elif key == "KP_2":
         self._objectModel.translateY(-1) # Go Back (Y-)
+        self._houseModel.translateY(-1)
         self.delegate.worldViewShouldUpdate() 
         self.__updateProjection()
       elif key == "KP_7":
@@ -80,10 +84,12 @@ class ApplicationViewModel:
         self.__updateProjection()
       elif key == "KP_Add":
         self._objectModel.translateZ(1) # Go Up (Z+)
+        self._houseModel.translateZ(1)
         self.delegate.worldViewShouldUpdate()
         self.__updateProjection()
       elif key == "KP_Enter":
         self._objectModel.translateZ(-1) # Go Down (Z-)
+        self._houseModel.translateZ(-1)
         self.delegate.worldViewShouldUpdate()
         self.__updateProjection()
 

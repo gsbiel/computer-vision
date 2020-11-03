@@ -84,40 +84,5 @@ class ObjectModel(RigidBodyModel):
     self._vectors = reshape
     return
 
-  def __moveInitialPositionToFirstQuadrant(self, dx,dy,dz):
-    """
-    O objeto STL não está situado no primeiro quadrante.
-    Essa função move todos os pontos do objeto para o primeiro quadrante e atualiza o valores
-    iniciais do ponto de referência e das matrizes de mudança de coordenadas para se 
-    adequarem à nova posição inicial do objeto.
-    """
-    translationMatrix = np.array([
-                                  [1, 0, 0, dx],
-                                  [0, 1, 0, dy],
-                                  [0, 0, 1, dz],
-                                  [0, 0, 0, 1 ]
-                                ])
-
-    bodyInFirstQuadrant = translationMatrix.dot(self._body.transpose()).transpose()
-    referenceInFirstQuadrant = translationMatrix.dot(self._axis_reference.transpose()).transpose()
-    ref_x_firstQuadrant = referenceInFirstQuadrant[0]
-    ref_y_firstQuadrant = referenceInFirstQuadrant[1]
-    ref_z_firstQuadrant = referenceInFirstQuadrant[2]
-
-    self._body = np.copy(bodyInFirstQuadrant)
-    self._initialBody = np.copy(bodyInFirstQuadrant)
-    self._axis_reference = np.copy(referenceInFirstQuadrant)
-
-    # Matrix that converts coordinates from world's referential to object's referential
-    self._fromWorldToObjectReferentialMatrix = np.array([
-                                        [1, 0, 0, (-1)*ref_x_firstQuadrant],
-                                        [0, 1, 0, (-1)*ref_y_firstQuadrant],
-                                        [0, 0, 1, (-1)*ref_z_firstQuadrant],
-                                        [0, 0, 0,                1        ]
-                                    ])
-
-    self._fromObjectToWorldReferentialMatrix = np.linalg.inv(self._fromWorldToObjectReferentialMatrix)
-    
-    return
 
 

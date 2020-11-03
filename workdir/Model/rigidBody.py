@@ -113,16 +113,6 @@ class RigidBodyModel:
     self.__changeCoordinatesToReferentialInWorld()
     return
 
-  # PRIVATE METHODS ####################################################################################################
-
-  def __changeCoordinatesToReferentialInObject(self):
-    self._body = self._fromWorldToObjectReferentialMatrix.dot(self._initialBody.transpose()).transpose()
-    return
-
-  def __changeCoordinatesToReferentialInWorld(self):
-    self._body = self._fromObjectToWorldReferentialMatrix.dot(self._body.transpose()).transpose()
-    return
-
   def get_rotation(self, theta_degree, phi_degree, alpha_degree):
     theta = (theta_degree * pi)/180.0
     phi = (phi_degree * pi)/180.0
