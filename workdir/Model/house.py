@@ -10,6 +10,7 @@ class HouseModel(RigidBodyModel):
     body = np.array([self._x, self._y, self._z, np.ones(self._x.size)]).transpose()
     reference_point = self.__find_central_point(body)
     super().__init__(body, reference_point)
+    super().moveInitialPositionToFirstQuadrant(12,10,0)
     return
 
   def get_points(self):

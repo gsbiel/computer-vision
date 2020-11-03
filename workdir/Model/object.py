@@ -10,6 +10,7 @@ class ObjectModel(RigidBodyModel):
   def __init__(self, reference_point=np.array([0,0,0,1])):
     super().__init__(np.array([]), reference_point)
 
+    # Charizard
     self._object_mesh = mesh.Mesh.from_file("./3DModel/myCharizard.stl")
 
     self._x = self._object_mesh.x.flatten()
@@ -20,7 +21,7 @@ class ObjectModel(RigidBodyModel):
     self._body = self._body.transpose()
     self._initialBody = np.copy(self._body)
 
-    self.__moveInitialPositionToFirstQuadrant(15,5,20)
+    super().moveInitialPositionToFirstQuadrant(15,5,20)
 
     self._vectors = np.array([])
     self.__generate_mesh()
