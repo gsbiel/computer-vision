@@ -39,6 +39,10 @@ class RigidBodyModel:
 
     return
 
+  # GETTERS #####################################################################################################
+  def get_referencePoint(self):
+    return self._translation_tracker.dot(self._axis_reference)
+
   # PUBLIC METHODS #####################################################################################################
   def translateX(self, dx=1):
     translation_matrix = np.array([[1,0,0,dx], [0,1,0,0],[0,0,1,0],[0,0,0,1]])

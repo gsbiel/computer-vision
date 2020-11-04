@@ -11,3 +11,7 @@ class ApplicationViewModelInterface(ABC):
   @abstractmethod
   def projectionViewShouldUpdate(self) -> None:
     pass
+
+  @abstractmethod
+  def referencesViewShouldUpdate(self, obj, cam) -> None:
+    pass

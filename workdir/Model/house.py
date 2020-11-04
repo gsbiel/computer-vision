@@ -15,8 +15,27 @@ class HouseModel(RigidBodyModel):
 
   def get_points(self):
     return np.copy(self._body)
+  
+  def get_referencePoint(self):
+    return np.copy(self._axis_reference)
+
+  def translateX(self, dx):
+    super().translateX(dx)
+    self._axis_reference = self.__find_central_point(self._body)
+    return
+
+  def translateY(self, dy):
+    super().translateY(dy)
+    self._axis_reference = self.__find_central_point(self._body)
+    return
+
+  def translateZ(self, dz):
+    super().translateZ(dz)
+    self._axis_reference = self.__find_central_point(self._body)
+    return
 
   def __find_central_point(self, obj):
+    obj = np.copy(obj).transpose()
     x_central = (max(obj[0,:]) + min(obj[0,:]))/2
     y_central = (max(obj[1,:]) + min(obj[1,:]))/2
     z_central = (max(obj[2,:]) + min(obj[2,:]))/2

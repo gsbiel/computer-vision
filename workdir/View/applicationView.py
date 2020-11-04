@@ -3,9 +3,11 @@ import tkinter
 from ViewModel.appViewModelInterface import ApplicationViewModelInterface 
 from View.ViewComponents.camParamsView import CameraParamsView
 from View.ViewComponents.objSelectorView import ObjectSelectorView
+from View.ViewComponents.referencesView import ReferencesView
 from View.ViewComponents.rotationControlsView import RotationControlsView
 from View.worldView import WorldView
 from View.projectionView import ProjectionView
+
 
 class ApplicationView(ApplicationViewModelInterface):
 
@@ -19,6 +21,9 @@ class ApplicationView(ApplicationViewModelInterface):
     self._master.configure(background="white")
 
     # Children frames
+    self._top = tkinter.Frame(master=self._master)
+    self._top.pack(side=tkinter.TOP, fill=tkinter.X)
+
     self._left = tkinter.Frame(master=self._master)
     self._left.pack(side=tkinter.LEFT,expand=True, fill=tkinter.Y)
 
@@ -27,6 +32,9 @@ class ApplicationView(ApplicationViewModelInterface):
     
     self._right = tkinter.Frame(master=self._master)
     self._right.pack(side=tkinter.LEFT,expand=False)
+
+    # Painel Elements
+    self._referencesView = ReferencesView(self._top, viewModel)
 
     # User controls
     self._objSelectorView = ObjectSelectorView(self._left, viewModel)
@@ -40,7 +48,7 @@ class ApplicationView(ApplicationViewModelInterface):
     self.registerForEvents(viewModel)
     return
 
-  # GETTERS ####################################################################
+  # GETTERS ################################################################################
   def get_masterView(self):
     return self._master
 
@@ -53,7 +61,7 @@ class ApplicationView(ApplicationViewModelInterface):
   def get_rightView(self):
     return self._right
 
-  # METHODS ####################################################################
+  # METHODS ################################################################################
   def registerForEvents(self, viewModel):
     self._master.bind("<Key>", lambda event: viewModel.onKeyboardPressed(event.keysym))
     return
@@ -62,7 +70,11 @@ class ApplicationView(ApplicationViewModelInterface):
     self._master.mainloop()
     return
 
-  # PROTOCOLS ##################################################################
+  # PROTOCOLS ##############################################################################
+  def referencesViewShouldUpdate(self, obj, camera):
+    self._referencesView.updateReferences(obj, camera)
+    return
+  
   def worldViewShouldUpdate(self):
     self._worldView.updateFigure(self._viewModel)
     return
