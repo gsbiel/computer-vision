@@ -22,16 +22,21 @@ class ApplicationView(ApplicationViewModelInterface):
     self._master.configure(background="white")
 
     # Children frames
-    self._top = tkinter.Frame(master=self._master)
-    self._top.pack(side=tkinter.TOP, fill=tkinter.X)
-
+  
     self._left = tkinter.Frame(master=self._master)
     self._left.pack(side=tkinter.LEFT,expand=True, fill=tkinter.Y)
 
-    self._center = tkinter.Frame(master=self._master)
+    self._wrapper = tkinter.Frame(master=self._master)
+    self._wrapper.configure(background="white")
+    self._wrapper.pack(side=tkinter.LEFT, expand=True, fill=tkinter.Y)
+    
+    self._top = tkinter.Frame(master=self._wrapper)
+    self._top.pack(side=tkinter.TOP, fill=tkinter.X)
+
+    self._center = tkinter.Frame(master=self._wrapper)
     self._center.pack(side=tkinter.LEFT,expand=False)
     
-    self._right = tkinter.Frame(master=self._master)
+    self._right = tkinter.Frame(master=self._wrapper)
     self._right.pack(side=tkinter.LEFT,expand=False)
 
     # Painel Elements
