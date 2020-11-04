@@ -20,6 +20,11 @@ AXIS_COLORS = [
     "b"  # color for z-axis
 ]
 
+AXIS_SCALE = {
+  "min":0,
+  "max":30
+}
+
 class WorldView:
 
   def __init__(self, parentView, viewModel):
@@ -87,15 +92,15 @@ class WorldView:
   def __set_axis_scale(self, ax):
     # X axis
     # ax.set_xlim3d([-15.0, 15.0])
-    ax.set_xlim3d([0, 40])
+    ax.set_xlim3d([AXIS_SCALE["min"], AXIS_SCALE["max"]])
     ax.set_xlabel('X')
     # Y axis
     # ax.set_ylim3d([-5.0, 25.0])
-    ax.set_ylim3d([0, 40])
+    ax.set_ylim3d([AXIS_SCALE["min"], AXIS_SCALE["max"]])
     ax.set_ylabel('Y')
     # Z axis
     # ax.set_zlim3d([-20.0, 10.0])
-    ax.set_zlim3d([0, 40])
+    ax.set_zlim3d([AXIS_SCALE["min"], AXIS_SCALE["max"]])
     ax.set_zlabel('Z')
     return
 
