@@ -23,25 +23,25 @@ class CameraModel(RigidBodyModel):
   # GETTERS #########################################################################################
   
   def get_mainPoint(self):
-    return self._p_0
+    return np.copy(self._p_0)
   
   def get_directionVectors(self):
-    return self._p_1
+    return np.copy(self._p_1)
 
   def get_initialBody(self):
-    return self._initialBody
+    return np.copy(self._initialBody)
 
   def get_projectedObject(self):
     return np.copy(self._projectedObject)
 
   def get_translationTracker(self):
-    return self._translation_tracker
+    return np.copy(self._translation_tracker)
 
   def get_intrinsicParams(self):
-    return self._intrinsicMatrix
+    return np.copy(self._intrinsicMatrix)
 
   def get_projectionMatrix(self):
-    return self._projection_matrix
+    return np.copy(self._projection_matrix)
 
   # SETTERS ##########################################################################################
   
