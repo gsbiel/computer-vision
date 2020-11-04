@@ -3,6 +3,7 @@ import tkinter
 from ViewModel.appViewModelInterface import ApplicationViewModelInterface 
 from View.ViewComponents.camParamsView import CameraParamsView
 from View.ViewComponents.objSelectorView import ObjectSelectorView
+from View.ViewComponents.refSelectorView import ReferenceSelectorView
 from View.ViewComponents.referencesView import ReferencesView
 from View.ViewComponents.rotationControlsView import RotationControlsView
 from View.worldView import WorldView
@@ -38,6 +39,7 @@ class ApplicationView(ApplicationViewModelInterface):
 
     # User controls
     self._objSelectorView = ObjectSelectorView(self._left, viewModel)
+    self._refSelectorView = ReferenceSelectorView(self._left, viewModel)
     self._rotationControlsView = RotationControlsView(self._left, viewModel)
     self._cameraParamsView = CameraParamsView(self._left, viewModel)
     

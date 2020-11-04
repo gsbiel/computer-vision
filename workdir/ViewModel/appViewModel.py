@@ -160,6 +160,10 @@ class ApplicationViewModel:
     self._currentObject = currentObject
     return
 
+  def selectedReferenceChanged(self, currentReference):
+    print('Reference changed to: {ref}'.format(ref=currentReference))
+    return
+
   def xOrientationChanged(self, orientation):
     if self._currentObject == OBJECTS[0][1]:
       self._objectModel.rotateX(orientation)
