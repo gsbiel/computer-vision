@@ -18,6 +18,8 @@ class CameraModel(RigidBodyModel):
                                     [0,0,1,0]
                                 ])
     self._projectedObject = np.array([])
+
+    self.setIntrinsicParams(2,4.7,6.5,0.0,10.0,10.0)
     return
 
   # GETTERS #########################################################################################
@@ -110,6 +112,7 @@ class CameraModel(RigidBodyModel):
     self._projectedObject = self._intrinsicMatrix.dot(self._projection_matrix.dot(extrinsic_params_matrix.dot(object.transpose()))).transpose()
     z_coordinates = self._projectedObject[:, -1]
     z_coordinates = z_coordinates.reshape(len(z_coordinates),1)
+    z_coordinates[z_coordinates==0] = 1
     self._projectedObject = np.divide(self._projectedObject, z_coordinates)
     return 
   
