@@ -60,7 +60,11 @@ class ReferencesView:
 
   def updateReferences(self, obj, cam):
     if obj is not None:
-      self._objValueString.set('({x}, {y}, {z})'.format(x=obj[0], y=obj[1], z=obj[2]))
+      self._objValueString.set('({x}, {y}, {z})'.format(
+                                                          x='{0:.2f}'.format(obj[0]), 
+                                                          y='{0:.2f}'.format(obj[1]), 
+                                                          z='{0:.2f}'.format(obj[2])
+                                                        ))
     if cam is not None:
       self._cameraValueString.set('({x}, {y}, {z})'.format(x=cam[0][0], y=cam[0][1], z=cam[0][2]))
     return
