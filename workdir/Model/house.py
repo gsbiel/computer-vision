@@ -34,6 +34,10 @@ class HouseModel(RigidBodyModel):
     self._axis_reference = self.__find_central_point(self._body)
     return
 
+  def translateXY(self, code):
+    super().translateXY(code)
+    self._axis_reference = self.__find_central_point(self._body)
+    return
   def __find_central_point(self, obj):
     obj = np.copy(obj).transpose()
     x_central = (max(obj[0,:]) + min(obj[0,:]))/2

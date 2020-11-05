@@ -80,19 +80,27 @@ class ApplicationViewModel:
         self.updateProjection()
       elif key == "KP_7":
         self._objectModel.translateXY("01") # Go On-Left (XY plane)
+        self._houseModel.translateXY("01")
         self.delegate.worldViewShouldUpdate()
+        self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_9":
         self._objectModel.translateXY("11") # Go On-Right (XY plane)
+        self._houseModel.translateXY("11")
         self.delegate.worldViewShouldUpdate()
+        self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_1":
         self._objectModel.translateXY("00") # Go Back-Left (XY plane)
+        self._houseModel.translateXY("00")
         self.delegate.worldViewShouldUpdate()
+        self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_3":
         self._objectModel.translateXY("10") # Go Back-Right (XY plane)
+        self._houseModel.translateXY("10")
         self.delegate.worldViewShouldUpdate()
+        self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_Add":
         self._objectModel.translateZ(1) # Go Up (Z+)
