@@ -175,31 +175,37 @@ class ApplicationViewModel:
   def xOrientationChanged(self, orientation):
     if self._currentObject == OBJECTS[0][1]:
       self._objectModel.rotateX(orientation)
+      self._houseModel.rotateX(orientation)
     else:
       self._cameraModel.rotateX(orientation)
 
     self.delegate.worldViewShouldUpdate()
     self.updateProjection()
+    self.refreshDisplays()
     return
 
   def yOrientationChanged(self, orientation):
     if self._currentObject == OBJECTS[0][1]:
       self._objectModel.rotateY(orientation)
+      self._houseModel.rotateY(orientation)
     else:
       self._cameraModel.rotateY(orientation)
 
     self.delegate.worldViewShouldUpdate()
     self.updateProjection()
+    self.refreshDisplays()
     return
 
   def zOrientationChanged(self, orientation):
     if self._currentObject == OBJECTS[0][1]:
       self._objectModel.rotateZ(orientation)
+      self._houseModel.rotateZ(orientation)
     else:
       self._cameraModel.rotateZ(orientation)
 
     self.delegate.worldViewShouldUpdate()
     self.updateProjection()
+    self.refreshDisplays()
     return
 
   def intrinsincParamsChanged(self, f, sx, sy, stheta, ox, oy):
