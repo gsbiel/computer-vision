@@ -18,7 +18,7 @@ class ReferenceSelectorView:
 
     # Keeps track of the current selected object
     self._selectedReference = tkinter.StringVar()
-    self._selectedReference.set(OBJECTS[0][1])
+    self._selectedReference.set(OBJECTS[1][1])
 
     # Master frame
     self._masterFrame = tkinter.Frame(parentView)

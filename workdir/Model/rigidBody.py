@@ -4,194 +4,186 @@ from math import pi, cos, sin
 
 class RigidBodyModel:
 
-  def __init__(self, body_definition, reference):
+  def __init__(self, body_definition):
 
-    # This property stays unchanged
-    self._initialBody = np.copy(body_definition)
     self._body = np.copy(body_definition)
+    self._objRefPoint = self.__findCentraPoint(self._body)
+    self._objBase = np.array([
+                              [1.0, 0.0, 0.0],
+                              [0.0, 1.0, 0.0],
+                              [0.0, 0.0, 1.0],
+                              [0.0, 0.0, 0.0],
+                            ],dtype='float32')
 
-    self._axis_reference = reference
-    self._ref_x = reference[0]
-    self._ref_y= reference[1]
-    self._ref_z = reference[2]
+    self._x_orientation_world = 0.0
+    self._y_orientation_world = 0.0
+    self._z_orientation_world = 0.0
 
-    # Matrix that converts coordinates from world's referential to object's referential
-    self._fromWorldToObjectReferentialMatrix = np.array([
-                                        [1, 0, 0, (-1)*self._ref_x],
-                                        [0, 1, 0, (-1)*self._ref_y],
-                                        [0, 0, 1, (-1)*self._ref_z],
-                                        [0, 0, 0,         1        ]
-                                    ])
-
-    self._fromObjectToWorldReferentialMatrix = np.linalg.inv(self._fromWorldToObjectReferentialMatrix)
-
-    # Keeps track of the translations suffered by the object
-    self._translation_tracker = np.array([
-                                            [1,0,0,0],
-                                            [0,1,0,0],
-                                            [0,0,1,0],
-                                            [0,0,0,1]
-                                        ])
-
-    self._x_orientation = 0
-    self._y_orientation = 0
-    self._z_orientation = 0
+    self._x_orientation_obj = 0.0
+    self._y_orientation_obj = 0.0
+    self._z_orientation_obj = 0.0
 
     return
 
   # GETTERS #####################################################################################################
   def get_referencePoint(self):
-    return self._translation_tracker.dot(self._axis_reference)
+    return np.copy(self._objRefPoint)
+  
+  def get_objBase(self):
+    return np.copy(self._objBase)
+  
+  def get_objBody(self):
+    return np.copy(self._body)
 
   # PUBLIC METHODS #####################################################################################################
-  def translateX(self, dx=1):
-    translation_matrix = np.array([[1,0,0,dx], [0,1,0,0],[0,0,1,0],[0,0,0,1]])
-    self._body = (translation_matrix.dot(self._body.transpose())).transpose()
-    self.__trackTranslation(translation_matrix)
+  def translateX(self, withRespectTo="WORLD", dx=1.0):
+    translation_matrix = self.get_translation(dx,0.0,0.0)
+    self.__transform(translation_matrix, withRespectTo)
     return
 
-  def translateY(self, dy=1):
-    translation_matrix = np.array([[1,0,0,0], [0,1,0,dy],[0,0,1,0],[0,0,0,1]])
-    self._body = (translation_matrix.dot(self._body.transpose())).transpose()
-    self.__trackTranslation(translation_matrix)    
+  def translateY(self, withRespectTo="WORLD", dy=1.0):
+    translation_matrix = self.get_translation(0.0,dy,0.0)
+    self.__transform(translation_matrix, withRespectTo)
     return
 
-  def translateZ(self, dz=1):
-    translation_matrix = np.array([[1,0,0,0], [0,1,0,0],[0,0,1,dz],[0,0,0,1]])
-    self._body = (translation_matrix.dot(self._body.transpose())).transpose()    
-    self.__trackTranslation(translation_matrix)    
+  def translateZ(self, withRespectTo="WORLD", dz=1.0):
+    translation_matrix = self.get_translation(0.0,0.0,dz)
+    self.__transform(translation_matrix, withRespectTo)
     return
 
-  def translateXY(self, code, d=1):
-    if code == "00":
-        translation_matrix = np.array([[1,0,0,-1*d], [0,1,0,-1*d],[0,0,1,0],[0,0,0,1]])
-        self._body = (translation_matrix.dot(self._body.transpose())).transpose()
-        self.__trackTranslation(translation_matrix)
-    elif code == "01":
-        translation_matrix = np.array([[1,0,0,-1*d], [0,1,0,d],[0,0,1,0],[0,0,0,1]])
-        self._body = (translation_matrix.dot(self._body.transpose())).transpose()
-        self.__trackTranslation(translation_matrix)
-    elif code == "10":
-        translation_matrix = np.array([[1,0,0,d], [0,1,0,-1*d],[0,0,1,0],[0,0,0,1]])
-        self._body = (translation_matrix.dot(self._body.transpose())).transpose()
-        self.__trackTranslation(translation_matrix)
-    elif code == "11":
-        translation_matrix = np.array([[1,0,0,d], [0,1,0,d],[0,0,1,0],[0,0,0,1]])
-        self._body = (translation_matrix.dot(self._body.transpose())).transpose()
-        self.__trackTranslation(translation_matrix)
+  def rotateX(self, withRespectTo="WORLD", angle=0.0):
+    dteta = 0.0
+    if withRespectTo == "WORLD":
+      dteta = angle - self._x_orientation_world 
+      self._x_orientation_world = angle
+    else:
+      dteta = angle - self._x_orientation_obj 
+      self._x_orientation_obj = angle
+    rotation_matrix = self.get_rotation(0.0, dteta, 0.0)
+    self.__transform(rotation_matrix, withRespectTo)
     return
 
-  def rotateX(self, angle):
-    # Abordagem corpo imutável na origem
-    self._body = np.copy(self._initialBody)
-    self.__changeCoordinatesToReferentialInObject()
-    self._x_orientation = angle
-    rotation_matrix = self.get_rotation(self._z_orientation, angle, self._y_orientation)
-    rotadedBody = rotation_matrix.dot(self._body.transpose())
-    translatedBody = self._translation_tracker.dot(rotadedBody).transpose()
-    self._body = translatedBody
-    self.__changeCoordinatesToReferentialInWorld()
+  def rotateY(self, withRespectTo="WORLD", angle=0.0):
+    dteta = 0.0
+    if withRespectTo == "WORLD":
+      dteta = angle - self._y_orientation_world 
+      self._y_orientation_world = angle
+    else:
+      dteta = angle - self._y_orientation_obj 
+      self._y_orientation_obj = angle
+    rotation_matrix = self.get_rotation(0.0, 0.0, dteta)
+    self.__transform(rotation_matrix, withRespectTo)
     return
 
-  def rotateY(self, angle):
-    # Abordagem corpo imutável na origem
-    self._body = np.copy(self._initialBody)
-    self.__changeCoordinatesToReferentialInObject()
-    self._y_orientation = angle
-    rotation_matrix = self.get_rotation(self._z_orientation, self._x_orientation, angle)
-    rotadedBody = rotation_matrix.dot(self._body.transpose())
-    translatedBody = self._translation_tracker.dot(rotadedBody).transpose()
-    self._body = translatedBody
-    self.__changeCoordinatesToReferentialInWorld()
+  def rotateZ(self, withRespectTo="WORLD", angle=0.0):
+    dteta = 0.0
+    if withRespectTo == "WORLD":
+      dteta = angle - self._z_orientation_world 
+      self._z_orientation_world = angle
+    else:
+      dteta = angle - self._z_orientation_obj 
+      self._z_orientation_obj = angle
+    rotation_matrix = self.get_rotation(dteta, 0.0, 0.0)
+    self.__transform(rotation_matrix, withRespectTo)
     return
 
-  def rotateZ(self, angle):
-    # Abordagem corpo imutável na origem
-    self._body = np.copy(self._initialBody)
-    self.__changeCoordinatesToReferentialInObject()
-    self._z_orientation = angle
-    rotation_matrix = self.get_rotation(angle, self._x_orientation, self._y_orientation)
-    rotadedBody = rotation_matrix.dot(self._body.transpose())
-    translatedBody = self._translation_tracker.dot(rotadedBody).transpose()
-    self._body = translatedBody
-    self.__changeCoordinatesToReferentialInWorld()
-    return
+  def get_translation(self, dx=0, dy=0, dz=0):
+    return np.array([
+                      [1.0, 0.0, 0.0,  dx],
+                      [0.0, 1.0, 0.0,  dy],
+                      [0.0, 0.0, 1.0,  dz],
+                      [0.0, 0.0, 0.0, 1.0]
+                    ], dtype='float32')
 
   def get_rotation(self, theta_degree, phi_degree, alpha_degree):
     theta = (theta_degree * pi)/180.0
     phi = (phi_degree * pi)/180.0
     alfa = (alpha_degree * pi)/180.0
     #Z
-    rot = [
-        [cos(theta), -sin(theta),  0,0],
-        [sin(theta), cos(theta),   0,0],
-        [    0,          0,        1,0],
-        [    0,          0,        0,1]]
+    rot = np.array([
+        [cos(theta), -sin(theta),  0.0,0.0],
+        [sin(theta), cos(theta),   0.0,0.0],
+        [    0.0,          0.0,    1.0,0.0],
+        [    0.0,          0.0,    0.0,1.0]],dtype='float32')
 
     #X
-    rot = np.dot(rot,
-                [[1,    0,        0,     0],
-                [0, cos(phi),-sin(phi), 0],
-                [0, sin(phi), cos(phi), 0],
-                [0,    0,        0,     1]])
+    rot = np.dot(rot, 
+                  np.array( [[1.0,    0.0,     0.0,     0.0],
+                            [ 0.0, cos(phi),-sin(phi),  0.0],
+                            [ 0.0, sin(phi), cos(phi),  0.0],
+                            [ 0.0,    0.0,     0.0,     1.0]],dtype='float32'))
     #Y
     rot = np.dot(rot,
-                [[cos(alfa),   0, sin(alfa), 0],
-                [    0,       1,    0,      0],
-                [-sin(alfa),  0, cos(alfa), 0],
-                [    0,       0,    0,      1]])
+                  np.array( [[cos(alfa),   0.0, sin(alfa), 0.0],
+                            [    0.0,      1.0,    0.0,    0.0],
+                            [-sin(alfa),   0.0, cos(alfa), 0.0],
+                            [    0.0,      0.0,    0.0,    1.0]],dtype='float32'))
     return rot
 
   def moveInitialPositionToFirstQuadrant(self, dx,dy,dz):
-    """
-    O objeto STL não está situado no primeiro quadrante.
-    Essa função move todos os pontos do objeto para o primeiro quadrante e atualiza o valores
-    iniciais do ponto de referência e das matrizes de mudança de coordenadas para se 
-    adequarem à nova posição inicial do objeto.
-    """
-    translationMatrix = np.array([
-                                  [1, 0, 0, dx],
-                                  [0, 1, 0, dy],
-                                  [0, 0, 1, dz],
-                                  [0, 0, 0, 1 ]
-                                ])
-
-    bodyInFirstQuadrant = translationMatrix.dot(self._body.transpose()).transpose()
-    referenceInFirstQuadrant = translationMatrix.dot(self._axis_reference.transpose()).transpose()
-    ref_x_firstQuadrant = referenceInFirstQuadrant[0]
-    ref_y_firstQuadrant = referenceInFirstQuadrant[1]
-    ref_z_firstQuadrant = referenceInFirstQuadrant[2]
-
-    self._body = np.copy(bodyInFirstQuadrant)
-    self._initialBody = np.copy(bodyInFirstQuadrant)
-    self._axis_reference = np.copy(referenceInFirstQuadrant)
-
-    # Matrix that converts coordinates from world's referential to object's referential
-    self._fromWorldToObjectReferentialMatrix = np.array([
-                                        [1, 0, 0, (-1)*ref_x_firstQuadrant],
-                                        [0, 1, 0, (-1)*ref_y_firstQuadrant],
-                                        [0, 0, 1, (-1)*ref_z_firstQuadrant],
-                                        [0, 0, 0,                1        ]
-                                    ])
-
-    self._fromObjectToWorldReferentialMatrix = np.linalg.inv(self._fromWorldToObjectReferentialMatrix)
-    
+    translation_matrix = self.get_translation(dx, dy, dz)
+    self._body = translation_matrix.dot(self._body.transpose()).transpose()
+    self._objRefPoint = self.__findCentraPoint(self._body)
+    print(self._objRefPoint)
     return
 
   # PRIVATE METHODS ####################################################################################################
 
-  def __changeCoordinatesToReferentialInObject(self):
-    self._body = self._fromWorldToObjectReferentialMatrix.dot(self._initialBody.transpose()).transpose()
+  def __transform(self, transformation, withRespectTo):
+    if withRespectTo == "SELECTED_OBJECT":
+      transform = self.__changeCoordinatesToReferentialInWorld().dot(
+        transformation.dot(
+          self.__changeCoordinatesToReferentialInObject()
+        )
+      )
+      self._body = transform.dot(self._body.transpose()).transpose()
+      self._objBase = transform.dot(self._objBase)   
+      self._objRefPoint = transform.dot(self._objRefPoint)
+    else:
+      self._body = (transformation.dot(self._body.transpose())).transpose()
+      self._objBase = transformation.dot(self._objBase) 
+      self._objRefPoint = transformation.dot(self._objRefPoint)
+
+    # self._objRefPoint = self.__findCentraPoint(self._body)
+    # print('Saindo de transform, objRefPoint:{ref}'.format(ref=self._objRefPoint))
     return
+
+  def __changeCoordinatesToReferentialInObject(self):
+    undoRotations = self._objBase.transpose()
+    undoRotations = np.vstack([undoRotations,np.array([0,0,0,1])])
+    undoTranslations = self.get_translation(
+                                        -self._objRefPoint[0], #dx
+                                        -self._objRefPoint[1], #dy
+                                        -self._objRefPoint[2]) #dz
+    return undoRotations.dot(undoTranslations)                             
 
   def __changeCoordinatesToReferentialInWorld(self):
-    self._body = self._fromObjectToWorldReferentialMatrix.dot(self._body.transpose()).transpose()
-    return
+    restoreRotations = np.copy(self._objBase)
+    restoreRotations = np.c_[restoreRotations,np.array([0,0,0,1])]
+    restoreTranslations = self.get_translation(
+                                          self._objRefPoint[0], #dx
+                                          self._objRefPoint[1], #dy
+                                          self._objRefPoint[2]) #dz
+    print(restoreRotations)
+    return restoreTranslations.dot(restoreRotations)
 
-  def __trackTranslation(self, translation_matrix):
-    self._translation_tracker = translation_matrix.dot(self._translation_tracker)
-    self._fromWorldToObjectReferentialMatrix = np.linalg.inv(translation_matrix).dot(self._fromWorldToObjectReferentialMatrix)
-    self._fromObjectToWorldReferentialMatrix = np.linalg.inv(self._fromWorldToObjectReferentialMatrix)
-    return
-
-
+  def __findCentraPoint(self, obj):
+      obj = obj.transpose()
+      if obj.shape[0] > 1:
+        """
+        Se haver mais de 1 linha, trata-se de um objeto 3D
+        """
+        x_central = (max(obj[0,:]) + min(obj[0,:]))/2.0
+        y_central = (max(obj[1,:]) + min(obj[1,:]))/2.0
+        z_central = (max(obj[2,:]) + min(obj[2,:]))/2.0
+        central_point = np.array([x_central,y_central,z_central,1.0]) 
+        return central_point
+      else:
+        """
+        Se haver apenas 1 linha, trata-se da câmera, que consiste de apenas 1 ponto
+        """
+        x_central = obj[0][0]
+        y_central = obj[0][1]
+        z_central = obj[0][2]
+        central_point = np.array([x_central,y_central,z_central,1.0]) 
+        return central_point

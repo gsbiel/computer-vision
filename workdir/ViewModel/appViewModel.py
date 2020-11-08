@@ -16,27 +16,25 @@ class ApplicationViewModel:
   def __init__(self):
     self.delegate = None
     self._currentObject = OBJECTS[0][1]
-    self._cameraModel = CameraModel(
-                                      np.array([referenceInCamera]), 
-                                      np.array([[1,0,0,1],[0,1,0,1],[0,0,1,1]]),
-                                      referenceInCamera
-                                    )
-    self._objectModel = ObjectModel(referenceInObject)
+    self._currentReferenceIn = "world"
+    self._cameraModel = CameraModel(np.array([referenceInCamera]))
+    # self._objectModel = ObjectModel()
     self._houseModel = HouseModel()
     return
 
   # GETTERS ############################################################################################################
   def get_objectMesh(self):
-    return self._objectModel.get_objectVectors()
+    # return self._objectModel.get_objectVectors()
+    return
 
   def get_cameraMainPoint(self):
-    return self._cameraModel.get_mainPoint()
+    return self._cameraModel.get_referencePoint()
 
   def get_cameraDirectionVectors(self):
-    return self._cameraModel.get_directionVectors()
+    return self._cameraModel.get_objBase()
 
   def get_xyzPoints(self):
-    return self._houseModel.get_points()
+    return self._houseModel.get_objBody()
 
   def get_cameraProjection(self):
     return self._cameraModel.get_projectedObject()
@@ -46,7 +44,7 @@ class ApplicationViewModel:
   def refreshDisplays(self):
     self.delegate.referencesViewShouldUpdate(
                                               self._houseModel.get_referencePoint(),
-                                              self._cameraModel.get_mainPoint()
+                                              self._cameraModel.get_referencePoint()
                                             )
     return
 
@@ -55,110 +53,70 @@ class ApplicationViewModel:
   def onKeyboardPressed(self, key):
     if self._currentObject == OBJECTS[0][1]:
       if key == "KP_6":
-        self._objectModel.translateX(1) # Go Right (X+)
-        self._houseModel.translateX(1)
+        # self._objectModel.translateX(self._currentReferenceIn, 1) # Go Right (X+)
+        self._houseModel.translateX(self._currentReferenceIn, 1)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_4":
-        self._objectModel.translateX(-1) # Go Left (X-)
-        self._houseModel.translateX(-1)
+        # self._objectModel.translateX(self._currentReferenceIn, -1) # Go Left (X-)
+        self._houseModel.translateX(self._currentReferenceIn, -1)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_8":
-        self._objectModel.translateY(1) # Go On (Y+)
-        self._houseModel.translateY(1)
+        # self._objectModel.translateY(self._currentReferenceIn, 1) # Go On (Y+)
+        self._houseModel.translateY(self._currentReferenceIn, 1)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_2":
-        self._objectModel.translateY(-1) # Go Back (Y-)
-        self._houseModel.translateY(-1)
+        # self._objectModel.translateY(self._currentReferenceIn, -1) # Go Back (Y-)
+        self._houseModel.translateY(self._currentReferenceIn, -1)
         self.delegate.worldViewShouldUpdate() 
         self.refreshDisplays()
         self.updateProjection()
-      elif key == "KP_7":
-        self._objectModel.translateXY("01") # Go On-Left (XY plane)
-        self._houseModel.translateXY("01")
-        self.delegate.worldViewShouldUpdate()
-        self.refreshDisplays()
-        self.updateProjection()
-      elif key == "KP_9":
-        self._objectModel.translateXY("11") # Go On-Right (XY plane)
-        self._houseModel.translateXY("11")
-        self.delegate.worldViewShouldUpdate()
-        self.refreshDisplays()
-        self.updateProjection()
-      elif key == "KP_1":
-        self._objectModel.translateXY("00") # Go Back-Left (XY plane)
-        self._houseModel.translateXY("00")
-        self.delegate.worldViewShouldUpdate()
-        self.refreshDisplays()
-        self.updateProjection()
-      elif key == "KP_3":
-        self._objectModel.translateXY("10") # Go Back-Right (XY plane)
-        self._houseModel.translateXY("10")
-        self.delegate.worldViewShouldUpdate()
-        self.refreshDisplays()
-        self.updateProjection()
       elif key == "KP_Add":
-        self._objectModel.translateZ(1) # Go Up (Z+)
-        self._houseModel.translateZ(1)
+        # self._objectModel.translateZ(self._currentReferenceIn, 1) # Go Up (Z+)
+        self._houseModel.translateZ(self._currentReferenceIn, 1)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_Enter":
-        self._objectModel.translateZ(-1) # Go Down (Z-)
-        self._houseModel.translateZ(-1)
+        # self._objectModel.translateZ(self._currentReferenceIn, -1) # Go Down (Z-)
+        self._houseModel.translateZ(self._currentReferenceIn, -1)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
 
     elif self._currentObject == OBJECTS[1][1]:
       if key == "KP_6":
-        self._cameraModel.translateX(1) # Go Right (X+)
+        self._cameraModel.translateX(self._currentReferenceIn, 1) # Go Right (X+)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_4":
-        self._cameraModel.translateX(-1) # Go Left (X-)
+        self._cameraModel.translateX(self._currentReferenceIn, -1) # Go Left (X-)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_8":
-        self._cameraModel.translateY(1) # Go On (Y+)
+        self._cameraModel.translateY(self._currentReferenceIn, 1) # Go On (Y+)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_2":
-        self._cameraModel.translateY(-1) # Go Back (Y-) 
+        self._cameraModel.translateY(self._currentReferenceIn, -1) # Go Back (Y-) 
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
-      elif key == "KP_7":
-        self._cameraModel.translateXY("01") # Go On-Left (XY plane)
-        self.delegate.worldViewShouldUpdate()
-        self.updateProjection()
-      elif key == "KP_9":
-        self._cameraModel.translateXY("11") # Go On-Right (XY plane)
-        self.delegate.worldViewShouldUpdate()
-        self.updateProjection()
-      elif key == "KP_1":
-        self._cameraModel.translateXY("00") # Go Back-Left (XY plane)
-        self.delegate.worldViewShouldUpdate()
-        self.updateProjection()
-      elif key == "KP_3":
-        self._cameraModel.translateXY("10") # Go Back-Right (XY plane)
-        self.delegate.worldViewShouldUpdate()
-        self.updateProjection()
       elif key == "KP_Add":
-        self._cameraModel.translateZ(1) # Go Up (Z+)
+        self._cameraModel.translateZ(self._currentReferenceIn, 1) # Go Up (Z+)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
       elif key == "KP_Enter":
-        self._cameraModel.translateZ(-1) # Go Down (Z-)
+        self._cameraModel.translateZ(self._currentReferenceIn, -1) # Go Down (Z-)
         self.delegate.worldViewShouldUpdate()
         self.refreshDisplays()
         self.updateProjection()
@@ -169,15 +127,15 @@ class ApplicationViewModel:
     return
 
   def selectedReferenceChanged(self, currentReference):
-    print('Reference changed to: {ref}'.format(ref=currentReference))
+    self._currentReferenceIn = currentReference
     return
 
   def xOrientationChanged(self, orientation):
     if self._currentObject == OBJECTS[0][1]:
-      self._objectModel.rotateX(orientation)
-      self._houseModel.rotateX(orientation)
+      # self._objectModel.rotateX(self._currentReferenceIn, orientation)
+      self._houseModel.rotateX(self._currentReferenceIn, orientation)
     else:
-      self._cameraModel.rotateX(orientation)
+      self._cameraModel.rotateX(self._currentReferenceIn, orientation)
 
     self.delegate.worldViewShouldUpdate()
     self.updateProjection()
@@ -186,10 +144,10 @@ class ApplicationViewModel:
 
   def yOrientationChanged(self, orientation):
     if self._currentObject == OBJECTS[0][1]:
-      self._objectModel.rotateY(orientation)
-      self._houseModel.rotateY(orientation)
+      # self._objectModel.rotateY(self._currentReferenceIn, orientation)
+      self._houseModel.rotateY(self._currentReferenceIn, orientation)
     else:
-      self._cameraModel.rotateY(orientation)
+      self._cameraModel.rotateY(self._currentReferenceIn, orientation)
 
     self.delegate.worldViewShouldUpdate()
     self.updateProjection()
@@ -198,10 +156,10 @@ class ApplicationViewModel:
 
   def zOrientationChanged(self, orientation):
     if self._currentObject == OBJECTS[0][1]:
-      self._objectModel.rotateZ(orientation)
-      self._houseModel.rotateZ(orientation)
+      # self._objectModel.rotateZ(self._currentReferenceIn, orientation)
+      self._houseModel.rotateZ(self._currentReferenceIn, orientation)
     else:
-      self._cameraModel.rotateZ(orientation)
+      self._cameraModel.rotateZ(self._currentReferenceIn, orientation)
 
     self.delegate.worldViewShouldUpdate()
     self.updateProjection()
@@ -215,7 +173,7 @@ class ApplicationViewModel:
 
   def updateProjection(self):
     # self._cameraModel.project(self._objectModel.get_objectBody())
-    self._cameraModel.project(self._houseModel.get_points())
+    self._cameraModel.project(self._houseModel.get_objBody())
     self.delegate.projectionViewShouldUpdate() 
     return
 

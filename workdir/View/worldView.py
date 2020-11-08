@@ -70,11 +70,11 @@ class WorldView:
     return
 
   def __drawCamera(self, ax, mainPoint, directions):
-      for index in range(directions.shape[0]):
+      for index in range(directions.shape[0]-1):
           ax.quiver(
-              mainPoint[0][0], 
-              mainPoint[0][1], 
-              mainPoint[0][2], 
+              mainPoint[0], 
+              mainPoint[1], 
+              mainPoint[2], 
               directions[index][0], 
               directions[index][1], 
               directions[index][2], 

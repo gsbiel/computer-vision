@@ -66,6 +66,6 @@ class ReferencesView:
                                                           z='{0:.2f}'.format(obj[2])
                                                         ))
     if cam is not None:
-      self._cameraValueString.set('({x}, {y}, {z})'.format(x=cam[0][0], y=cam[0][1], z=cam[0][2]))
+      self._cameraValueString.set('({x}, {y}, {z})'.format(x=cam[0], y=cam[1], z=cam[2]))
     return
 

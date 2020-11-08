@@ -7,9 +7,7 @@ path_to_obj = "./3DModel/myCharizard.stl"
 
 class ObjectModel(RigidBodyModel):
 
-  def __init__(self, reference_point=np.array([0,0,0,1])):
-    super().__init__(np.array([]), reference_point)
-
+  def __init__(self):
     # Charizard
     self._object_mesh = mesh.Mesh.from_file("./3DModel/myCharizard.stl")
 
@@ -17,11 +15,12 @@ class ObjectModel(RigidBodyModel):
     self._y = self._object_mesh.y.flatten()
     self._z = self._object_mesh.z.flatten()
 
-    self._body = np.array([self._x, self._y, self._z, np.ones(self._x.size)])
-    self._body = self._body.transpose()
-    self._initialBody = np.copy(self._body)
+    body = np.array([self._x, self._y, self._z, np.ones(self._x.size)],dtype='float32')
+    body = body.transpose()
 
-    super().moveInitialPositionToFirstQuadrant(15,5,20)
+    super().__init__(np.copy(body))
+
+    # super().moveInitialPositionToFirstQuadrant(15,5,20)
 
     self._vectors = np.array([])
     self.__generate_mesh()
@@ -31,43 +30,35 @@ class ObjectModel(RigidBodyModel):
   def get_objectVectors(self):
     return np.copy(self._vectors)
 
-  def get_objectBody(self):
-    return np.copy(self._body)
-
   # PUBLIC METHODS ####################################################################################################
 
-  def translateX(self, dx=1):
-    super().translateX(dx)
+  def translateX(self, withRespectTo="world", dx=1):
+    super().translateX(withRespectTo, dx)
     self.__generate_mesh()
     return
   
-  def translateY(self, dy=1):
-    super().translateY(dy)
+  def translateY(self, withRespectTo="world", dy=1):
+    super().translateY(withRespectTo, dy)
     self.__generate_mesh()
     return
 
-  def translateZ(self, dz=1):
-    super().translateZ(dz)
+  def translateZ(self, withRespectTo="world", dz=1):
+    super().translateZ(withRespectTo, dz)
     self.__generate_mesh()
     return
 
-  def translateXY(self, code):
-    super().translateXY(code)
+  def rotateX(self, withRespectTo="world", angle=0):
+    super().rotateX(withRespectTo, angle)
     self.__generate_mesh()
     return
 
-  def rotateX(self, angle):
-    super().rotateX(angle)
+  def rotateY(self, withRespectTo="world", angle=0):
+    super().rotateY(withRespectTo, angle)
     self.__generate_mesh()
     return
 
-  def rotateY(self, angle):
-    super().rotateY(angle)
-    self.__generate_mesh()
-    return
-
-  def rotateZ(self, angle):
-    super().rotateZ(angle)
+  def rotateZ(self, withRespectTo="world", angle=0):
+    super().rotateZ(withRespectTo, angle)
     self.__generate_mesh()
     return
 
