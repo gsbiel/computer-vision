@@ -1,5 +1,7 @@
 import tkinter
 import time
+
+import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
@@ -7,7 +9,8 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 OBJECT_STYLING = {
   "colors":"k",
   "lineWidth":0.2,
-  "linestyles":"-"
+  "linestyles":"-",
+  "arrowsLength":4,
 }
 
 CAMERA_STYLYING = {
@@ -44,7 +47,8 @@ class WorldView:
     self.__refreshFigure(self._ax)
     # self.__drawObject(self._ax, viewModel.get_objectMesh())
     self.__drawXYZ(self._ax, viewModel.get_xyzPoints())
-    self.__drawCamera(self._ax, viewModel.get_cameraMainPoint(), viewModel.get_cameraDirectionVectors())
+    self.__drawCamera(self._ax, viewModel.get_cameraMainPoint(), viewModel.get_cameraBaseVectors())
+    self.__drawObjectRefAxis(self._ax, viewModel.get_objectMainPoint(), viewModel.get_objBaseVectors())
     self.__updateCanvas()
     return
 
@@ -70,19 +74,34 @@ class WorldView:
     return
 
   def __drawCamera(self, ax, mainPoint, directions):
-      for index in range(directions.shape[0]-1):
-          ax.quiver(
-              mainPoint[0], 
-              mainPoint[1], 
-              mainPoint[2], 
-              directions[index][0], 
-              directions[index][1], 
-              directions[index][2], 
-              length = CAMERA_STYLYING["arrowsLength"], 
-              normalize=True, 
-              color=AXIS_COLORS[index]
-          )
-      return
+    for index in range(directions.shape[0]-1):
+        ax.quiver(
+            mainPoint[0], 
+            mainPoint[1], 
+            mainPoint[2], 
+            directions[index][0], 
+            directions[index,][1], 
+            directions[index][2], 
+            length = CAMERA_STYLYING["arrowsLength"], 
+            normalize=True, 
+            color=AXIS_COLORS[index]
+        )
+    return
+
+  def __drawObjectRefAxis(self, ax, mainPoint, directions):
+    for index in range(directions.shape[0]-1):
+        ax.quiver(
+            mainPoint[0], 
+            mainPoint[1], 
+            mainPoint[2], 
+            directions[index][0], 
+            directions[index][1], 
+            directions[index][2], 
+            length = OBJECT_STYLING["arrowsLength"], 
+            normalize=True, 
+            color=AXIS_COLORS[index]
+        )
+    return
 
   def __refreshFigure(self, ax):
     self.__cleanFigure(ax)

@@ -30,6 +30,18 @@ class ApplicationViewModel:
   def get_cameraMainPoint(self):
     return self._cameraModel.get_referencePoint()
 
+  def get_objectMainPoint(self):
+    return self._houseModel.get_referencePoint()
+
+  def get_objectBase(self):
+    return self._houseModel.get_objBase()
+
+  def get_objBaseVectors(self):
+    return self._houseModel.get_objBaseVectors()
+
+  def get_cameraBaseVectors(self):
+    return self._cameraModel.get_objBaseVectors()
+
   def get_cameraDirectionVectors(self):
     return self._cameraModel.get_objBase()
 
@@ -38,6 +50,9 @@ class ApplicationViewModel:
 
   def get_cameraProjection(self):
     return self._cameraModel.get_projectedObject()
+
+  def get_cameraIntrinsicParams(self):
+    return self._cameraModel.get_intrinsicParams()
 
   # METHODS #########################################################################################################
   
@@ -135,8 +150,8 @@ class ApplicationViewModel:
       # self._objectModel.rotateX(self._currentReferenceIn, orientation)
       self._houseModel.rotateX(self._currentReferenceIn, orientation)
     else:
+      # Por algum motivo tenho que inverter a rotação para os eixos
       self._cameraModel.rotateX(self._currentReferenceIn, orientation)
-
     self.delegate.worldViewShouldUpdate()
     self.updateProjection()
     self.refreshDisplays()
@@ -147,6 +162,7 @@ class ApplicationViewModel:
       # self._objectModel.rotateY(self._currentReferenceIn, orientation)
       self._houseModel.rotateY(self._currentReferenceIn, orientation)
     else:
+      # Por algum motivo tenho que inverter a rotação para os eixos
       self._cameraModel.rotateY(self._currentReferenceIn, orientation)
 
     self.delegate.worldViewShouldUpdate()
@@ -159,6 +175,7 @@ class ApplicationViewModel:
       # self._objectModel.rotateZ(self._currentReferenceIn, orientation)
       self._houseModel.rotateZ(self._currentReferenceIn, orientation)
     else:
+      # Por algum motivo tenho que inverter a rotação para os eixos
       self._cameraModel.rotateZ(self._currentReferenceIn, orientation)
 
     self.delegate.worldViewShouldUpdate()

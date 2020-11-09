@@ -15,6 +15,13 @@ class RigidBodyModel:
                               [0.0, 0.0, 0.0],
                             ],dtype='float64')
 
+    self._objBaseVectors = np.array([
+                                      [1, 0, 0, 0],
+                                      [0, 1, 0, 0],
+                                      [0, 0, 1, 0],
+                                      [0, 0, 0, 0]
+                            ])
+
     self._x_orientation_world = 0.0
     self._y_orientation_world = 0.0
     self._z_orientation_world = 0.0
@@ -31,6 +38,9 @@ class RigidBodyModel:
   
   def get_objBase(self):
     return np.copy(self._objBase)
+
+  def get_objBaseVectors(self):
+    return np.copy(self._objBaseVectors)
   
   def get_objBody(self):
     return np.copy(self._body)
@@ -124,7 +134,6 @@ class RigidBodyModel:
     translation_matrix = self.get_translation(dx, dy, dz)
     self._body = translation_matrix.dot(self._body.transpose()).transpose()
     self._objRefPoint = self.__findCentraPoint(self._body)
-    print(self._objRefPoint)
     return
 
   # PRIVATE METHODS ####################################################################################################
@@ -137,15 +146,13 @@ class RigidBodyModel:
         )
       )
       self._body = transform.dot(self._body.transpose()).transpose()
-      self._objBase = transformation.dot(self._objBase)   
       self._objRefPoint = transform.dot(self._objRefPoint)
     else:
       self._body = (transformation.dot(self._body.transpose())).transpose()
-      self._objBase = transformation.dot(self._objBase) 
       self._objRefPoint = transformation.dot(self._objRefPoint)
 
-    # self._objRefPoint = self.__findCentraPoint(self._body)
-    # print('Saindo de transform, objRefPoint:{ref}'.format(ref=self._objRefPoint))
+    self._objBase = transformation.dot(self._objBase) 
+    self._objBaseVectors = transformation.dot(self._objBaseVectors.transpose()).transpose()
     return
 
   def __changeCoordinatesToReferentialInObject(self):

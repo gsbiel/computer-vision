@@ -1,6 +1,15 @@
 import numpy as np
 from .rigidBody import RigidBodyModel
 
+CAMERA_PARAMS = {
+  "f": 30,
+  "sx":6.9,
+  "sy":5.1,
+  "s_theta":0.0,
+  "ox":310,
+  "oy":410
+}
+
 class CameraModel(RigidBodyModel):
 
   # INIT ############################################################################################
@@ -15,7 +24,14 @@ class CameraModel(RigidBodyModel):
                                 ])
     self._projectedObject = np.array([])
 
-    self.setIntrinsicParams(2,4.7,6.5,0.0,10.0,10.0)
+    self.setIntrinsicParams(
+                              CAMERA_PARAMS["f"],
+                              CAMERA_PARAMS["sx"],
+                              CAMERA_PARAMS["sy"],
+                              CAMERA_PARAMS["s_theta"],
+                              CAMERA_PARAMS["ox"],
+                              CAMERA_PARAMS["oy"]
+                            )
     return
 
   # GETTERS #########################################################################################
@@ -23,9 +39,25 @@ class CameraModel(RigidBodyModel):
   def get_projectedObject(self):
     return np.copy(self._projectedObject)
 
+  def get_intrinsicParams(self):
+    return {
+      "f": self._f,
+      "sx": self._sx,
+      "sy": self._sy,
+      "stheta": self._stheta,
+      "ox": self._ox,
+      "oy": self._oy
+    }
+    
   # SETTERS ##########################################################################################
   
   def setIntrinsicParams(self, f, sx, sy, stheta, ox, oy):
+    self._f = f
+    self._sx = sx
+    self._sy = sy
+    self._stheta = stheta
+    self._ox = ox
+    self._oy = oy
     self._intrinsicMatrix = np.array([
                                         [f*sx, f*stheta, ox],
                                         [ 0,     f*sy,   oy],

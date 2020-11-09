@@ -1,4 +1,5 @@
 import tkinter
+import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import time
@@ -10,8 +11,6 @@ class ProjectionView:
     self._ax = self._fig.add_subplot(1,1,1)
     # self._ax.set_xlim([0, 640])
     # self._ax.set_ylim([0, 640])
-    # self._ax.set_xlim([-5000, 5000])
-    # self._ax.set_ylim([-5000, 5000])
     self._canvas = FigureCanvasTkAgg(self._fig, master=self._masterView)  # A tk.DrawingArea.
     self._canvas.draw()
     self._canvas.get_tk_widget().pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=0)
@@ -46,8 +45,7 @@ class ProjectionView:
     return
 
   def __set_axis_scale(self, ax):
-    # ax.set_xlim([0, 640])
-    # ax.set_ylim([0, 640])
-    # self._ax.set_xlim([-5000, 5000])
-    # self._ax.set_ylim([-5000, 5000])
+    ax.set_xlim([0, 640])
+    ax.set_ylim([0, 480])
+    self._ax.invert_yaxis()
     return
