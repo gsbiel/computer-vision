@@ -48,4 +48,5 @@ class ProjectionView:
     ax.set_xlim([0, 640])
     ax.set_ylim([0, 480])
     self._ax.invert_yaxis()
+    self._ax.set_aspect('equal', adjustable='box')
     return
