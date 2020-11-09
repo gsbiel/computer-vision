@@ -19,21 +19,9 @@ class CameraModel(RigidBodyModel):
     return
 
   # GETTERS #########################################################################################
-  
-  # def get_initialBody(self):
-  #   return np.copy(self._initialBody)
 
   def get_projectedObject(self):
     return np.copy(self._projectedObject)
-
-  # def get_translationTracker(self):
-  #   return np.copy(self._translation_tracker)
-
-  # def get_intrinsicParams(self):
-  #   return np.copy(self._intrinsicMatrix)
-
-  # def get_projectionMatrix(self):
-  #   return np.copy(self._projection_matrix)
 
   # SETTERS ##########################################################################################
   
@@ -47,45 +35,6 @@ class CameraModel(RigidBodyModel):
 
   # PUBLIC METHODS ###################################################################################
   
-  # def translateX(self, withRespectTo="world", dx):
-  #   super().translateX(withRespectTo, dx)
-  #   return
-
-  # def translateY(self, withRespectTo="world", dy):
-  #   super().translateY(withRespectTo, dy)
-  #   return
-
-  # def translateZ(self, withRespectTo="world", dz):
-  #   super().translateZ(withRespectTo, dz)
-  #   return
-
-  # def rotateX(self, withRespectTo="world", angle):
-  #   self._body = np.copy(self._initialBody)
-  #   self._x_orientation = angle
-  #   rotation_matrix = super().get_rotation(self._z_orientation, angle, self._y_orientation)
-  #   rotadedBody = rotation_matrix.dot(self._body.transpose())
-  #   self._p_1 = rotadedBody.transpose()
-  #   self._body = self._p_0
-  #   return
-
-  # def rotateY(self, withRespectTo="world", angle):
-  #   self._body = np.copy(self._initialBody)
-  #   self._y_orientation = angle
-  #   rotation_matrix = super().get_rotation(self._z_orientation, self._x_orientation, angle)
-  #   rotadedBody = rotation_matrix.dot(self._body.transpose())
-  #   self._p_1 = rotadedBody.transpose()
-  #   self._body = self._p_0
-  #   return
-
-  # def rotateZ(self, withRespectTo="world", angle):
-  #   self._body = np.copy(self._initialBody)
-  #   self._z_orientation = angle
-  #   rotation_matrix = super().get_rotation(angle, self._x_orientation, self._y_orientation)
-  #   rotadedBody = rotation_matrix.dot(self._body.transpose())
-  #   self._p_1 = rotadedBody.transpose()
-  #   self._body = self._p_0
-  #   return
-
   def project(self, object):
     inverse_rotation = self._objBase.transpose() # transposta = inversa
     inverse_rotation = np.vstack([inverse_rotation,np.array([0,0,0,1])])
