@@ -7,7 +7,7 @@ class HouseModel(RigidBodyModel):
     self._x = self._house_points[:,0]
     self._y = self._house_points[:,1]
     self._z = self._house_points[:,2]
-    body = np.array([self._x, self._y, self._z, np.ones(self._x.size)],dtype='float32').transpose()
+    body = np.array([self._x, self._y, self._z, np.ones(self._x.size)],dtype='float64').transpose()
     super().__init__(body)
     super().moveInitialPositionToFirstQuadrant(12,10,0)
     return

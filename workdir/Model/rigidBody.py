@@ -13,7 +13,7 @@ class RigidBodyModel:
                               [0.0, 1.0, 0.0],
                               [0.0, 0.0, 1.0],
                               [0.0, 0.0, 0.0],
-                            ],dtype='float32')
+                            ],dtype='float64')
 
     self._x_orientation_world = 0.0
     self._y_orientation_world = 0.0
@@ -93,7 +93,7 @@ class RigidBodyModel:
                       [0.0, 1.0, 0.0,  dy],
                       [0.0, 0.0, 1.0,  dz],
                       [0.0, 0.0, 0.0, 1.0]
-                    ], dtype='float32')
+                    ], dtype='float64')
 
   def get_rotation(self, theta_degree, phi_degree, alpha_degree):
     theta = (theta_degree * pi)/180.0
@@ -104,20 +104,20 @@ class RigidBodyModel:
         [cos(theta), -sin(theta),  0.0,0.0],
         [sin(theta), cos(theta),   0.0,0.0],
         [    0.0,          0.0,    1.0,0.0],
-        [    0.0,          0.0,    0.0,1.0]],dtype='float32')
+        [    0.0,          0.0,    0.0,1.0]],dtype='float64')
 
     #X
     rot = np.dot(rot, 
                   np.array( [[1.0,    0.0,     0.0,     0.0],
                             [ 0.0, cos(phi),-sin(phi),  0.0],
                             [ 0.0, sin(phi), cos(phi),  0.0],
-                            [ 0.0,    0.0,     0.0,     1.0]],dtype='float32'))
+                            [ 0.0,    0.0,     0.0,     1.0]],dtype='float64'))
     #Y
     rot = np.dot(rot,
                   np.array( [[cos(alfa),   0.0, sin(alfa), 0.0],
                             [    0.0,      1.0,    0.0,    0.0],
                             [-sin(alfa),   0.0, cos(alfa), 0.0],
-                            [    0.0,      0.0,    0.0,    1.0]],dtype='float32'))
+                            [    0.0,      0.0,    0.0,    1.0]],dtype='float64'))
     return rot
 
   def moveInitialPositionToFirstQuadrant(self, dx,dy,dz):
@@ -137,7 +137,7 @@ class RigidBodyModel:
         )
       )
       self._body = transform.dot(self._body.transpose()).transpose()
-      self._objBase = transform.dot(self._objBase)   
+      self._objBase = transformation.dot(self._objBase)   
       self._objRefPoint = transform.dot(self._objRefPoint)
     else:
       self._body = (transformation.dot(self._body.transpose())).transpose()
@@ -164,7 +164,6 @@ class RigidBodyModel:
                                           self._objRefPoint[0], #dx
                                           self._objRefPoint[1], #dy
                                           self._objRefPoint[2]) #dz
-    print(restoreRotations)
     return restoreTranslations.dot(restoreRotations)
 
   def __findCentraPoint(self, obj):
